@@ -1,0 +1,34 @@
+{
+  "annotations": {
+    "changelogDate": "20240214140411"
+  },
+  "dto": "mapstruct",
+  "entityTableName": "car_service_employee",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "age",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["min", "max"],
+      "fieldValidateRulesMax": "140",
+      "fieldValidateRulesMin": "2"
+    },
+    {
+      "fieldName": "yearsOfExperience",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": 0
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "CarServiceEmployee",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

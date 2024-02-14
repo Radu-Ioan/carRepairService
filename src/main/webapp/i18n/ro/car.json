@@ -1,0 +1,26 @@
+{
+  "carRepairServiceApp": {
+    "car": {
+      "home": {
+        "title": "Cars",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Creeare o nouă entitate Car",
+        "createOrEditLabel": "Creeare sau editare Car",
+        "notFound": "No Cars found"
+      },
+      "created": "A fost creată o nouă entitate Car cu identificatorul {{ param }}",
+      "updated": "Car cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Car cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți Car {{ id }}?"
+      },
+      "detail": {
+        "title": "Car"
+      },
+      "id": "ID",
+      "company": "Company",
+      "manufacturedYear": "Manufactured Year",
+      "ownerName": "Owner Name"
+    }
+  }
+}

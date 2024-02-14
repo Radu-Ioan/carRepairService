@@ -1,0 +1,26 @@
+{
+  "carRepairServiceApp": {
+    "carServiceEmployee": {
+      "home": {
+        "title": "Car Service Employees",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Creeare o nouă entitate Car Service Employee",
+        "createOrEditLabel": "Creeare sau editare Car Service Employee",
+        "notFound": "No Car Service Employees found"
+      },
+      "created": "A fost creată o nouă entitate Car Service Employee cu identificatorul {{ param }}",
+      "updated": "Car Service Employee cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Car Service Employee cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți Car Service Employee {{ id }}?"
+      },
+      "detail": {
+        "title": "Car Service Employee"
+      },
+      "id": "ID",
+      "name": "Name",
+      "age": "Age",
+      "yearsOfExperience": "Years Of Experience"
+    }
+  }
+}

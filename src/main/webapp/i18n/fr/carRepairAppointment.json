@@ -1,0 +1,24 @@
+{
+  "carRepairServiceApp": {
+    "carRepairAppointment": {
+      "home": {
+        "title": "CarRepairAppointments",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Car Repair Appointment",
+        "createOrEditLabel": "Créer ou éditer un Car Repair Appointment",
+        "notFound": "Aucun Car Repair Appointment trouvé"
+      },
+      "created": "Un nouveau Car Repair Appointment a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Car Repair Appointment avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Car Repair Appointment avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Car Repair Appointment {{ id }} ?"
+      },
+      "detail": {
+        "title": "Car Repair Appointment"
+      },
+      "id": "ID",
+      "date": "Date"
+    }
+  }
+}

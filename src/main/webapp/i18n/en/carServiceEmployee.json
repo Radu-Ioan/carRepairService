@@ -1,0 +1,26 @@
+{
+  "carRepairServiceApp": {
+    "carServiceEmployee": {
+      "home": {
+        "title": "Car Service Employees",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Car Service Employee",
+        "createOrEditLabel": "Create or edit a Car Service Employee",
+        "notFound": "No Car Service Employees found"
+      },
+      "created": "A new Car Service Employee is created with identifier {{ param }}",
+      "updated": "A Car Service Employee is updated with identifier {{ param }}",
+      "deleted": "A Car Service Employee is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Car Service Employee {{ id }}?"
+      },
+      "detail": {
+        "title": "Car Service Employee"
+      },
+      "id": "ID",
+      "name": "Name",
+      "age": "Age",
+      "yearsOfExperience": "Years Of Experience"
+    }
+  }
+}

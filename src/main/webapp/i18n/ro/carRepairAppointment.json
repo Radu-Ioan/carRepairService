@@ -1,0 +1,24 @@
+{
+  "carRepairServiceApp": {
+    "carRepairAppointment": {
+      "home": {
+        "title": "Car Repair Appointments",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Creeare o nouă entitate Car Repair Appointment",
+        "createOrEditLabel": "Creeare sau editare Car Repair Appointment",
+        "notFound": "No Car Repair Appointments found"
+      },
+      "created": "A fost creată o nouă entitate Car Repair Appointment cu identificatorul {{ param }}",
+      "updated": "Car Repair Appointment cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Car Repair Appointment cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți Car Repair Appointment {{ id }}?"
+      },
+      "detail": {
+        "title": "Car Repair Appointment"
+      },
+      "id": "ID",
+      "date": "Date"
+    }
+  }
+}

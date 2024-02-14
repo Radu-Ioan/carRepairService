@@ -1,0 +1,26 @@
+{
+  "carRepairServiceApp": {
+    "carServiceEmployee": {
+      "home": {
+        "title": "CarServiceEmployees",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Car Service Employee",
+        "createOrEditLabel": "Créer ou éditer un Car Service Employee",
+        "notFound": "Aucun Car Service Employee trouvé"
+      },
+      "created": "Un nouveau Car Service Employee a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Car Service Employee avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Car Service Employee avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Car Service Employee {{ id }} ?"
+      },
+      "detail": {
+        "title": "Car Service Employee"
+      },
+      "id": "ID",
+      "name": "Name",
+      "age": "Age",
+      "yearsOfExperience": "Years Of Experience"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "carRepairServiceApp": {
+    "carService": {
+      "home": {
+        "title": "Car Services",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Creeare o nouă entitate Car Service",
+        "createOrEditLabel": "Creeare sau editare Car Service",
+        "notFound": "No Car Services found"
+      },
+      "created": "A fost creată o nouă entitate Car Service cu identificatorul {{ param }}",
+      "updated": "Car Service cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Car Service cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți Car Service {{ id }}?"
+      },
+      "detail": {
+        "title": "Car Service"
+      },
+      "id": "ID",
+      "name": "Name",
+      "address": "Address"
+    }
+  }
+}

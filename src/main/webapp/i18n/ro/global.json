@@ -10,7 +10,11 @@
         "bankAccount": "ContBancar",
         "label": "Etichetă",
         "operation": "Operație",
-        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
+        "car": "Car",
+        "carService": "Car Service",
+        "carServiceEmployee": "Car Service Employee",
+        "carRepairAppointment": "Car Repair Appointment"
       },
       "account": {
         "main": "Cont",

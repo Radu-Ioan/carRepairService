@@ -1,0 +1,26 @@
+{
+  "carRepairServiceApp": {
+    "car": {
+      "home": {
+        "title": "Cars",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Car",
+        "createOrEditLabel": "Créer ou éditer un Car",
+        "notFound": "Aucun Car trouvé"
+      },
+      "created": "Un nouveau Car a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Car avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Car avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Car {{ id }} ?"
+      },
+      "detail": {
+        "title": "Car"
+      },
+      "id": "ID",
+      "company": "Company",
+      "manufacturedYear": "Manufactured Year",
+      "ownerName": "Owner Name"
+    }
+  }
+}

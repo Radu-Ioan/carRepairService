@@ -1,0 +1,21 @@
+{
+  "annotations": {
+    "changelogDate": "20240214140610"
+  },
+  "dto": "mapstruct",
+  "entityTableName": "car_repair_appointment",
+  "fields": [
+    {
+      "fieldName": "date",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "CarRepairAppointment",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

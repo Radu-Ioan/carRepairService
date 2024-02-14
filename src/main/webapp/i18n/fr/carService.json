@@ -1,0 +1,25 @@
+{
+  "carRepairServiceApp": {
+    "carService": {
+      "home": {
+        "title": "CarServices",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Car Service",
+        "createOrEditLabel": "Créer ou éditer un Car Service",
+        "notFound": "Aucun Car Service trouvé"
+      },
+      "created": "Un nouveau Car Service a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Car Service avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Car Service avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Car Service {{ id }} ?"
+      },
+      "detail": {
+        "title": "Car Service"
+      },
+      "id": "ID",
+      "name": "Name",
+      "address": "Address"
+    }
+  }
+}

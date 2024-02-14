@@ -1,0 +1,31 @@
+{
+  "annotations": {
+    "changelogDate": "20240214131810"
+  },
+  "dto": "mapstruct",
+  "entityTableName": "car",
+  "fields": [
+    {
+      "fieldName": "company",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "manufacturedYear",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": "1970"
+    },
+    {
+      "fieldName": "ownerName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Car",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

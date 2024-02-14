@@ -1,0 +1,25 @@
+{
+  "carRepairServiceApp": {
+    "carService": {
+      "home": {
+        "title": "Car Services",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Car Service",
+        "createOrEditLabel": "Create or edit a Car Service",
+        "notFound": "No Car Services found"
+      },
+      "created": "A new Car Service is created with identifier {{ param }}",
+      "updated": "A Car Service is updated with identifier {{ param }}",
+      "deleted": "A Car Service is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Car Service {{ id }}?"
+      },
+      "detail": {
+        "title": "Car Service"
+      },
+      "id": "ID",
+      "name": "Name",
+      "address": "Address"
+    }
+  }
+}
