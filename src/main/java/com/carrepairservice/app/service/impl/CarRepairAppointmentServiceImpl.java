@@ -72,11 +72,15 @@ public class CarRepairAppointmentServiceImpl implements CarRepairAppointmentServ
         return carRepairAppointmentRepository.findAll(pageable).map(carRepairAppointmentMapper::toDto);
     }
 
+    public Page<CarRepairAppointmentDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return carRepairAppointmentRepository.findAllWithEagerRelationships(pageable).map(carRepairAppointmentMapper::toDto);
+    }
+
     @Override
     @Transactional(readOnly = true)
     public Optional<CarRepairAppointmentDTO> findOne(Long id) {
         log.debug("Request to get CarRepairAppointment : {}", id);
-        return carRepairAppointmentRepository.findById(id).map(carRepairAppointmentMapper::toDto);
+        return carRepairAppointmentRepository.findOneWithEagerRelationships(id).map(carRepairAppointmentMapper::toDto);
     }
 
     @Override

@@ -42,6 +42,14 @@ public interface CarService {
     Page<CarDTO> findAll(Pageable pageable);
 
     /**
+     * Get all the cars with eager load of many-to-many relationships.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    Page<CarDTO> findAllWithEagerRelationships(Pageable pageable);
+
+    /**
      * Get the "id" car.
      *
      * @param id the id of the entity.

@@ -2,24 +2,33 @@ package com.carrepairservice.app.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.carrepairservice.app.IntegrationTest;
+import com.carrepairservice.app.domain.Car;
 import com.carrepairservice.app.domain.CarRepairAppointment;
 import com.carrepairservice.app.repository.CarRepairAppointmentRepository;
+import com.carrepairservice.app.service.CarRepairAppointmentService;
 import com.carrepairservice.app.service.dto.CarRepairAppointmentDTO;
 import com.carrepairservice.app.service.mapper.CarRepairAppointmentMapper;
 import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,6 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Integration tests for the {@link CarRepairAppointmentResource} REST controller.
  */
 @IntegrationTest
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 class CarRepairAppointmentResourceIT {
@@ -46,8 +56,14 @@ class CarRepairAppointmentResourceIT {
     @Autowired
     private CarRepairAppointmentRepository carRepairAppointmentRepository;
 
+    @Mock
+    private CarRepairAppointmentRepository carRepairAppointmentRepositoryMock;
+
     @Autowired
     private CarRepairAppointmentMapper carRepairAppointmentMapper;
+
+    @Mock
+    private CarRepairAppointmentService carRepairAppointmentServiceMock;
 
     @Autowired
     private EntityManager em;
@@ -65,6 +81,16 @@ class CarRepairAppointmentResourceIT {
      */
     public static CarRepairAppointment createEntity(EntityManager em) {
         CarRepairAppointment carRepairAppointment = new CarRepairAppointment().date(DEFAULT_DATE);
+        // Add required entity
+        Car car;
+        if (TestUtil.findAll(em, Car.class).isEmpty()) {
+            car = CarResourceIT.createEntity(em);
+            em.persist(car);
+            em.flush();
+        } else {
+            car = TestUtil.findAll(em, Car.class).get(0);
+        }
+        carRepairAppointment.setCar(car);
         return carRepairAppointment;
     }
 
@@ -76,6 +102,16 @@ class CarRepairAppointmentResourceIT {
      */
     public static CarRepairAppointment createUpdatedEntity(EntityManager em) {
         CarRepairAppointment carRepairAppointment = new CarRepairAppointment().date(UPDATED_DATE);
+        // Add required entity
+        Car car;
+        if (TestUtil.findAll(em, Car.class).isEmpty()) {
+            car = CarResourceIT.createUpdatedEntity(em);
+            em.persist(car);
+            em.flush();
+        } else {
+            car = TestUtil.findAll(em, Car.class).get(0);
+        }
+        carRepairAppointment.setCar(car);
         return carRepairAppointment;
     }
 
@@ -163,6 +199,23 @@ class CarRepairAppointmentResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(carRepairAppointment.getId().intValue())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllCarRepairAppointmentsWithEagerRelationshipsIsEnabled() throws Exception {
+        when(carRepairAppointmentServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restCarRepairAppointmentMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
+
+        verify(carRepairAppointmentServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllCarRepairAppointmentsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(carRepairAppointmentServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restCarRepairAppointmentMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
+        verify(carRepairAppointmentRepositoryMock, times(1)).findAll(any(Pageable.class));
     }
 
     @Test
@@ -287,6 +340,20 @@ class CarRepairAppointmentResourceIT {
 
         // Get all the carRepairAppointmentList where date is greater than SMALLER_DATE
         defaultCarRepairAppointmentShouldBeFound("date.greaterThan=" + SMALLER_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllCarRepairAppointmentsByCarIsEqualToSomething() throws Exception {
+        // Get already existing entity
+        Car car = carRepairAppointment.getCar();
+        carRepairAppointmentRepository.saveAndFlush(carRepairAppointment);
+        Long carId = car.getId();
+        // Get all the carRepairAppointmentList where car equals to carId
+        defaultCarRepairAppointmentShouldBeFound("carId.equals=" + carId);
+
+        // Get all the carRepairAppointmentList where car equals to (carId + 1)
+        defaultCarRepairAppointmentShouldNotBeFound("carId.equals=" + (carId + 1));
     }
 
     /**

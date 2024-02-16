@@ -25,6 +25,8 @@ public class CarRepairAppointmentCriteria implements Serializable, Criteria {
 
     private LocalDateFilter date;
 
+    private LongFilter carId;
+
     private Boolean distinct;
 
     public CarRepairAppointmentCriteria() {}
@@ -32,6 +34,7 @@ public class CarRepairAppointmentCriteria implements Serializable, Criteria {
     public CarRepairAppointmentCriteria(CarRepairAppointmentCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.date = other.date == null ? null : other.date.copy();
+        this.carId = other.carId == null ? null : other.carId.copy();
         this.distinct = other.distinct;
     }
 
@@ -70,6 +73,21 @@ public class CarRepairAppointmentCriteria implements Serializable, Criteria {
         this.date = date;
     }
 
+    public LongFilter getCarId() {
+        return carId;
+    }
+
+    public LongFilter carId() {
+        if (carId == null) {
+            carId = new LongFilter();
+        }
+        return carId;
+    }
+
+    public void setCarId(LongFilter carId) {
+        this.carId = carId;
+    }
+
     public Boolean getDistinct() {
         return distinct;
     }
@@ -87,12 +105,17 @@ public class CarRepairAppointmentCriteria implements Serializable, Criteria {
             return false;
         }
         final CarRepairAppointmentCriteria that = (CarRepairAppointmentCriteria) o;
-        return Objects.equals(id, that.id) && Objects.equals(date, that.date) && Objects.equals(distinct, that.distinct);
+        return (
+            Objects.equals(id, that.id) &&
+            Objects.equals(date, that.date) &&
+            Objects.equals(carId, that.carId) &&
+            Objects.equals(distinct, that.distinct)
+        );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, date, distinct);
+        return Objects.hash(id, date, carId, distinct);
     }
 
     // prettier-ignore
@@ -101,6 +124,7 @@ public class CarRepairAppointmentCriteria implements Serializable, Criteria {
         return "CarRepairAppointmentCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (date != null ? "date=" + date + ", " : "") +
+            (carId != null ? "carId=" + carId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

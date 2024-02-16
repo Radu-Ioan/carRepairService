@@ -20,6 +20,8 @@ public class CarDTO implements Serializable {
     @NotNull
     private String ownerName;
 
+    private CarRepairAppointmentDTO carRepairAppointment;
+
     public Long getId() {
         return id;
     }
@@ -52,6 +54,14 @@ public class CarDTO implements Serializable {
         this.ownerName = ownerName;
     }
 
+    public CarRepairAppointmentDTO getCarRepairAppointment() {
+        return carRepairAppointment;
+    }
+
+    public void setCarRepairAppointment(CarRepairAppointmentDTO carRepairAppointment) {
+        this.carRepairAppointment = carRepairAppointment;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -81,6 +91,7 @@ public class CarDTO implements Serializable {
             ", company='" + getCompany() + "'" +
             ", manufacturedYear=" + getManufacturedYear() +
             ", ownerName='" + getOwnerName() + "'" +
+            ", carRepairAppointment=" + getCarRepairAppointment() +
             "}";
     }
 }

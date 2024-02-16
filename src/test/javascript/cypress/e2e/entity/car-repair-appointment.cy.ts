@@ -18,15 +18,35 @@ describe('CarRepairAppointment e2e test', () => {
   const carRepairAppointmentSample = { date: '2024-02-13' };
 
   let carRepairAppointment;
+  let car;
 
   beforeEach(() => {
     cy.login(username, password);
   });
 
   beforeEach(() => {
+    // create an instance at the required relationship entity:
+    cy.authenticatedRequest({
+      method: 'POST',
+      url: '/api/cars',
+      body: { company: 'which', manufacturedYear: 31338, ownerName: 'now' },
+    }).then(({ body }) => {
+      car = body;
+    });
+  });
+
+  beforeEach(() => {
     cy.intercept('GET', '/api/car-repair-appointments+(?*|)').as('entitiesRequest');
     cy.intercept('POST', '/api/car-repair-appointments').as('postEntityRequest');
     cy.intercept('DELETE', '/api/car-repair-appointments/*').as('deleteEntityRequest');
+  });
+
+  beforeEach(() => {
+    // Simulate relationships api for better performance and reproducibility.
+    cy.intercept('GET', '/api/cars', {
+      statusCode: 200,
+      body: [car],
+    });
   });
 
   afterEach(() => {
@@ -36,6 +56,17 @@ describe('CarRepairAppointment e2e test', () => {
         url: `/api/car-repair-appointments/${carRepairAppointment.id}`,
       }).then(() => {
         carRepairAppointment = undefined;
+      });
+    }
+  });
+
+  afterEach(() => {
+    if (car) {
+      cy.authenticatedRequest({
+        method: 'DELETE',
+        url: `/api/cars/${car.id}`,
+      }).then(() => {
+        car = undefined;
       });
     }
   });
@@ -79,7 +110,10 @@ describe('CarRepairAppointment e2e test', () => {
         cy.authenticatedRequest({
           method: 'POST',
           url: '/api/car-repair-appointments',
-          body: carRepairAppointmentSample,
+          body: {
+            ...carRepairAppointmentSample,
+            car: car,
+          },
         }).then(({ body }) => {
           carRepairAppointment = body;
 
@@ -165,6 +199,8 @@ describe('CarRepairAppointment e2e test', () => {
       cy.get(`[data-cy="date"]`).type('2024-02-14');
       cy.get(`[data-cy="date"]`).blur();
       cy.get(`[data-cy="date"]`).should('have.value', '2024-02-14');
+
+      cy.get(`[data-cy="car"]`).select(1);
 
       cy.get(entityCreateSaveButtonSelector).click();
 

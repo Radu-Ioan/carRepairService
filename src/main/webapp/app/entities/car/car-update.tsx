@@ -8,6 +8,8 @@ import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateT
 import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
+import { ICarRepairAppointment } from 'app/shared/model/car-repair-appointment.model';
+import { getEntities as getCarRepairAppointments } from 'app/entities/car-repair-appointment/car-repair-appointment.reducer';
 import { ICar } from 'app/shared/model/car.model';
 import { getEntity, updateEntity, createEntity, reset } from './car.reducer';
 
@@ -19,6 +21,7 @@ export const CarUpdate = () => {
   const { id } = useParams<'id'>();
   const isNew = id === undefined;
 
+  const carRepairAppointments = useAppSelector(state => state.carRepairAppointment.entities);
   const carEntity = useAppSelector(state => state.car.entity);
   const loading = useAppSelector(state => state.car.loading);
   const updating = useAppSelector(state => state.car.updating);
@@ -34,6 +37,8 @@ export const CarUpdate = () => {
     } else {
       dispatch(getEntity(id));
     }
+
+    dispatch(getCarRepairAppointments({}));
   }, []);
 
   useEffect(() => {
@@ -54,6 +59,7 @@ export const CarUpdate = () => {
     const entity = {
       ...carEntity,
       ...values,
+      carRepairAppointment: carRepairAppointments.find(it => it.id.toString() === values.carRepairAppointment.toString()),
     };
 
     if (isNew) {
@@ -68,6 +74,7 @@ export const CarUpdate = () => {
       ? {}
       : {
           ...carEntity,
+          carRepairAppointment: carEntity?.carRepairAppointment?.id,
         };
 
   return (
@@ -123,6 +130,22 @@ export const CarUpdate = () => {
                   required: { value: true, message: translate('entity.validation.required') },
                 }}
               />
+              <ValidatedField
+                id="car-carRepairAppointment"
+                name="carRepairAppointment"
+                data-cy="carRepairAppointment"
+                label={translate('carRepairServiceApp.car.carRepairAppointment')}
+                type="select"
+              >
+                <option value="" key="0" />
+                {carRepairAppointments
+                  ? carRepairAppointments.map(otherEntity => (
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.date}
+                      </option>
+                    ))
+                  : null}
+              </ValidatedField>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/car" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

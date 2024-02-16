@@ -18,7 +18,8 @@
         "title": "Car Repair Appointment"
       },
       "id": "ID",
-      "date": "Date"
+      "date": "Date",
+      "car": "Car"
     }
   }
 }

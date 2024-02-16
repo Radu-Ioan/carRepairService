@@ -2,22 +2,31 @@ package com.carrepairservice.app.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.carrepairservice.app.IntegrationTest;
 import com.carrepairservice.app.domain.Car;
+import com.carrepairservice.app.domain.CarRepairAppointment;
 import com.carrepairservice.app.repository.CarRepository;
+import com.carrepairservice.app.service.CarService;
 import com.carrepairservice.app.service.dto.CarDTO;
 import com.carrepairservice.app.service.mapper.CarMapper;
 import jakarta.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Integration tests for the {@link CarResource} REST controller.
  */
 @IntegrationTest
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 class CarResourceIT {
@@ -50,8 +60,14 @@ class CarResourceIT {
     @Autowired
     private CarRepository carRepository;
 
+    @Mock
+    private CarRepository carRepositoryMock;
+
     @Autowired
     private CarMapper carMapper;
+
+    @Mock
+    private CarService carServiceMock;
 
     @Autowired
     private EntityManager em;
@@ -159,6 +175,23 @@ class CarResourceIT {
             .andExpect(jsonPath("$.[*].company").value(hasItem(DEFAULT_COMPANY)))
             .andExpect(jsonPath("$.[*].manufacturedYear").value(hasItem(DEFAULT_MANUFACTURED_YEAR)))
             .andExpect(jsonPath("$.[*].ownerName").value(hasItem(DEFAULT_OWNER_NAME)));
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllCarsWithEagerRelationshipsIsEnabled() throws Exception {
+        when(carServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restCarMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
+
+        verify(carServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllCarsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(carServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restCarMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
+        verify(carRepositoryMock, times(1)).findAll(any(Pageable.class));
     }
 
     @Test
@@ -415,6 +448,28 @@ class CarResourceIT {
 
         // Get all the carList where ownerName does not contain UPDATED_OWNER_NAME
         defaultCarShouldBeFound("ownerName.doesNotContain=" + UPDATED_OWNER_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllCarsByCarRepairAppointmentIsEqualToSomething() throws Exception {
+        CarRepairAppointment carRepairAppointment;
+        if (TestUtil.findAll(em, CarRepairAppointment.class).isEmpty()) {
+            carRepository.saveAndFlush(car);
+            carRepairAppointment = CarRepairAppointmentResourceIT.createEntity(em);
+        } else {
+            carRepairAppointment = TestUtil.findAll(em, CarRepairAppointment.class).get(0);
+        }
+        em.persist(carRepairAppointment);
+        em.flush();
+        car.setCarRepairAppointment(carRepairAppointment);
+        carRepository.saveAndFlush(car);
+        Long carRepairAppointmentId = carRepairAppointment.getId();
+        // Get all the carList where carRepairAppointment equals to carRepairAppointmentId
+        defaultCarShouldBeFound("carRepairAppointmentId.equals=" + carRepairAppointmentId);
+
+        // Get all the carList where carRepairAppointment equals to (carRepairAppointmentId + 1)
+        defaultCarShouldNotBeFound("carRepairAppointmentId.equals=" + (carRepairAppointmentId + 1));
     }
 
     /**

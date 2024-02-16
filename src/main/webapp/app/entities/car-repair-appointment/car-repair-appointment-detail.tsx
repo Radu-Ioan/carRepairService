@@ -42,6 +42,10 @@ export const CarRepairAppointmentDetail = () => {
               <TextFormat value={carRepairAppointmentEntity.date} type="date" format={APP_LOCAL_DATE_FORMAT} />
             ) : null}
           </dd>
+          <dt>
+            <Translate contentKey="carRepairServiceApp.carRepairAppointment.car">Car</Translate>
+          </dt>
+          <dd>{carRepairAppointmentEntity.car ? carRepairAppointmentEntity.car.ownerName : ''}</dd>
         </dl>
         <Button tag={Link} to="/car-repair-appointment" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}

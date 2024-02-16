@@ -6,6 +6,7 @@ import com.carrepairservice.app.repository.CarRepairAppointmentRepository;
 import com.carrepairservice.app.service.criteria.CarRepairAppointmentCriteria;
 import com.carrepairservice.app.service.dto.CarRepairAppointmentDTO;
 import com.carrepairservice.app.service.mapper.CarRepairAppointmentMapper;
+import jakarta.persistence.criteria.JoinType;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,6 +95,12 @@ public class CarRepairAppointmentQueryService extends QueryService<CarRepairAppo
             }
             if (criteria.getDate() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getDate(), CarRepairAppointment_.date));
+            }
+            if (criteria.getCarId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getCarId(), root -> root.join(CarRepairAppointment_.car, JoinType.LEFT).get(Car_.id))
+                    );
             }
         }
         return specification;

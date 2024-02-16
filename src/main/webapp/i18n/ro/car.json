@@ -20,7 +20,8 @@
       "id": "ID",
       "company": "Company",
       "manufacturedYear": "Manufactured Year",
-      "ownerName": "Owner Name"
+      "ownerName": "Owner Name",
+      "carRepairAppointment": "Car Repair Appointment"
     }
   }
 }

@@ -25,7 +25,17 @@
   "name": "Car",
   "pagination": "pagination",
   "readOnly": false,
-  "relationships": [],
+  "relationships": [
+    {
+      "id": false,
+      "otherEntityField": "date",
+      "otherEntityName": "carRepairAppointment",
+      "otherEntityRelationshipName": "car",
+      "relationshipName": "carRepairAppointment",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    }
+  ],
   "searchEngine": "no",
   "service": "serviceImpl"
 }

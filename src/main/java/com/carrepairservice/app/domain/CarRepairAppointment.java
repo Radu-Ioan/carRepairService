@@ -1,5 +1,6 @@
 package com.carrepairservice.app.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -28,6 +29,12 @@ public class CarRepairAppointment implements Serializable {
     @Column(name = "date", nullable = false)
     private LocalDate date;
 
+    @JsonIgnoreProperties(value = { "carRepairAppointment" }, allowSetters = true)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @NotNull
+    @JoinColumn(unique = true)
+    private Car car;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -54,6 +61,19 @@ public class CarRepairAppointment implements Serializable {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public Car getCar() {
+        return this.car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
+    public CarRepairAppointment car(Car car) {
+        this.setCar(car);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

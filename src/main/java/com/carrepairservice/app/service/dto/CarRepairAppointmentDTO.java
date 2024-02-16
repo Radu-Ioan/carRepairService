@@ -16,6 +16,8 @@ public class CarRepairAppointmentDTO implements Serializable {
     @NotNull
     private LocalDate date;
 
+    private CarDTO car;
+
     public Long getId() {
         return id;
     }
@@ -30,6 +32,14 @@ public class CarRepairAppointmentDTO implements Serializable {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public CarDTO getCar() {
+        return car;
+    }
+
+    public void setCar(CarDTO car) {
+        this.car = car;
     }
 
     @Override
@@ -59,6 +69,7 @@ public class CarRepairAppointmentDTO implements Serializable {
         return "CarRepairAppointmentDTO{" +
             "id=" + getId() +
             ", date='" + getDate() + "'" +
+            ", car=" + getCar() +
             "}";
     }
 }

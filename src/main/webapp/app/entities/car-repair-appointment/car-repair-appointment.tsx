@@ -124,6 +124,9 @@ export const CarRepairAppointment = () => {
                   <Translate contentKey="carRepairServiceApp.carRepairAppointment.date">Date</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('date')} />
                 </th>
+                <th>
+                  <Translate contentKey="carRepairServiceApp.carRepairAppointment.car">Car</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
                 <th />
               </tr>
             </thead>
@@ -139,6 +142,13 @@ export const CarRepairAppointment = () => {
                     {carRepairAppointment.date ? (
                       <TextFormat type="date" value={carRepairAppointment.date} format={APP_LOCAL_DATE_FORMAT} />
                     ) : null}
+                  </td>
+                  <td>
+                    {carRepairAppointment.car ? (
+                      <Link to={`/car/${carRepairAppointment.car.id}`}>{carRepairAppointment.car.ownerName}</Link>
+                    ) : (
+                      ''
+                    )}
                   </td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
