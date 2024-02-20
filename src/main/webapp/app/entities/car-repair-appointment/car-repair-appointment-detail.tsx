@@ -46,6 +46,10 @@ export const CarRepairAppointmentDetail = () => {
             <Translate contentKey="carRepairServiceApp.carRepairAppointment.car">Car</Translate>
           </dt>
           <dd>{carRepairAppointmentEntity.car ? carRepairAppointmentEntity.car.ownerName : ''}</dd>
+          <dt>
+            <Translate contentKey="carRepairServiceApp.carRepairAppointment.carService">Car Service</Translate>
+          </dt>
+          <dd>{carRepairAppointmentEntity.carService ? carRepairAppointmentEntity.carService.address : ''}</dd>
         </dl>
         <Button tag={Link} to="/car-repair-appointment" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}

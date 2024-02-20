@@ -19,7 +19,16 @@
   "name": "CarService",
   "pagination": "pagination",
   "readOnly": false,
-  "relationships": [],
+  "relationships": [
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "carRepairAppointment",
+      "otherEntityRelationshipName": "carService",
+      "relationshipName": "repairAppointments",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
   "searchEngine": "no",
   "service": "serviceImpl"
 }

@@ -6,6 +6,7 @@ import com.carrepairservice.app.repository.CarServiceRepository;
 import com.carrepairservice.app.service.criteria.CarServiceCriteria;
 import com.carrepairservice.app.service.dto.CarServiceDTO;
 import com.carrepairservice.app.service.mapper.CarServiceMapper;
+import jakarta.persistence.criteria.JoinType;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,6 +95,15 @@ public class CarServiceQueryService extends QueryService<CarService> {
             }
             if (criteria.getAddress() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getAddress(), CarService_.address));
+            }
+            if (criteria.getRepairAppointmentsId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getRepairAppointmentsId(),
+                            root -> root.join(CarService_.repairAppointments, JoinType.LEFT).get(CarRepairAppointment_.id)
+                        )
+                    );
             }
         }
         return specification;

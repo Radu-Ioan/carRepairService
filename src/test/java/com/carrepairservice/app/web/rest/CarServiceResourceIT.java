@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.carrepairservice.app.IntegrationTest;
+import com.carrepairservice.app.domain.CarRepairAppointment;
 import com.carrepairservice.app.domain.CarService;
 import com.carrepairservice.app.repository.CarServiceRepository;
 import com.carrepairservice.app.service.dto.CarServiceDTO;
@@ -317,6 +318,28 @@ class CarServiceResourceIT {
 
         // Get all the carServiceList where address does not contain UPDATED_ADDRESS
         defaultCarServiceShouldBeFound("address.doesNotContain=" + UPDATED_ADDRESS);
+    }
+
+    @Test
+    @Transactional
+    void getAllCarServicesByRepairAppointmentsIsEqualToSomething() throws Exception {
+        CarRepairAppointment repairAppointments;
+        if (TestUtil.findAll(em, CarRepairAppointment.class).isEmpty()) {
+            carServiceRepository.saveAndFlush(carService);
+            repairAppointments = CarRepairAppointmentResourceIT.createEntity(em);
+        } else {
+            repairAppointments = TestUtil.findAll(em, CarRepairAppointment.class).get(0);
+        }
+        em.persist(repairAppointments);
+        em.flush();
+        carService.addRepairAppointments(repairAppointments);
+        carServiceRepository.saveAndFlush(carService);
+        Long repairAppointmentsId = repairAppointments.getId();
+        // Get all the carServiceList where repairAppointments equals to repairAppointmentsId
+        defaultCarServiceShouldBeFound("repairAppointmentsId.equals=" + repairAppointmentsId);
+
+        // Get all the carServiceList where repairAppointments equals to (repairAppointmentsId + 1)
+        defaultCarServiceShouldNotBeFound("repairAppointmentsId.equals=" + (repairAppointmentsId + 1));
     }
 
     /**

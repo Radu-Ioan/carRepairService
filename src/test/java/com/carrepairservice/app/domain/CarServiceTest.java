@@ -1,9 +1,12 @@
 package com.carrepairservice.app.domain;
 
+import static com.carrepairservice.app.domain.CarRepairAppointmentTestSamples.*;
 import static com.carrepairservice.app.domain.CarServiceTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.carrepairservice.app.web.rest.TestUtil;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class CarServiceTest {
@@ -20,5 +23,27 @@ class CarServiceTest {
 
         carService2 = getCarServiceSample2();
         assertThat(carService1).isNotEqualTo(carService2);
+    }
+
+    @Test
+    void repairAppointmentsTest() throws Exception {
+        CarService carService = getCarServiceRandomSampleGenerator();
+        CarRepairAppointment carRepairAppointmentBack = getCarRepairAppointmentRandomSampleGenerator();
+
+        carService.addRepairAppointments(carRepairAppointmentBack);
+        assertThat(carService.getRepairAppointments()).containsOnly(carRepairAppointmentBack);
+        assertThat(carRepairAppointmentBack.getCarService()).isEqualTo(carService);
+
+        carService.removeRepairAppointments(carRepairAppointmentBack);
+        assertThat(carService.getRepairAppointments()).doesNotContain(carRepairAppointmentBack);
+        assertThat(carRepairAppointmentBack.getCarService()).isNull();
+
+        carService.repairAppointments(new HashSet<>(Set.of(carRepairAppointmentBack)));
+        assertThat(carService.getRepairAppointments()).containsOnly(carRepairAppointmentBack);
+        assertThat(carRepairAppointmentBack.getCarService()).isEqualTo(carService);
+
+        carService.setRepairAppointments(new HashSet<>());
+        assertThat(carService.getRepairAppointments()).doesNotContain(carRepairAppointmentBack);
+        assertThat(carRepairAppointmentBack.getCarService()).isNull();
     }
 }

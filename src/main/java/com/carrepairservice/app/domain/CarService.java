@@ -1,8 +1,11 @@
 package com.carrepairservice.app.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -29,6 +32,11 @@ public class CarService implements Serializable {
     @NotNull
     @Column(name = "address", nullable = false)
     private String address;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "carService")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "car", "carService" }, allowSetters = true)
+    private Set<CarRepairAppointment> repairAppointments = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -69,6 +77,37 @@ public class CarService implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Set<CarRepairAppointment> getRepairAppointments() {
+        return this.repairAppointments;
+    }
+
+    public void setRepairAppointments(Set<CarRepairAppointment> carRepairAppointments) {
+        if (this.repairAppointments != null) {
+            this.repairAppointments.forEach(i -> i.setCarService(null));
+        }
+        if (carRepairAppointments != null) {
+            carRepairAppointments.forEach(i -> i.setCarService(this));
+        }
+        this.repairAppointments = carRepairAppointments;
+    }
+
+    public CarService repairAppointments(Set<CarRepairAppointment> carRepairAppointments) {
+        this.setRepairAppointments(carRepairAppointments);
+        return this;
+    }
+
+    public CarService addRepairAppointments(CarRepairAppointment carRepairAppointment) {
+        this.repairAppointments.add(carRepairAppointment);
+        carRepairAppointment.setCarService(this);
+        return this;
+    }
+
+    public CarService removeRepairAppointments(CarRepairAppointment carRepairAppointment) {
+        this.repairAppointments.remove(carRepairAppointment);
+        carRepairAppointment.setCarService(null);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

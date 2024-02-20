@@ -19,6 +19,7 @@ describe('CarRepairAppointment e2e test', () => {
 
   let carRepairAppointment;
   let car;
+  let carService;
 
   beforeEach(() => {
     cy.login(username, password);
@@ -33,6 +34,14 @@ describe('CarRepairAppointment e2e test', () => {
     }).then(({ body }) => {
       car = body;
     });
+    // create an instance at the required relationship entity:
+    cy.authenticatedRequest({
+      method: 'POST',
+      url: '/api/car-services',
+      body: { name: 'harsh', address: 'bah' },
+    }).then(({ body }) => {
+      carService = body;
+    });
   });
 
   beforeEach(() => {
@@ -46,6 +55,11 @@ describe('CarRepairAppointment e2e test', () => {
     cy.intercept('GET', '/api/cars', {
       statusCode: 200,
       body: [car],
+    });
+
+    cy.intercept('GET', '/api/car-services', {
+      statusCode: 200,
+      body: [carService],
     });
   });
 
@@ -67,6 +81,14 @@ describe('CarRepairAppointment e2e test', () => {
         url: `/api/cars/${car.id}`,
       }).then(() => {
         car = undefined;
+      });
+    }
+    if (carService) {
+      cy.authenticatedRequest({
+        method: 'DELETE',
+        url: `/api/car-services/${carService.id}`,
+      }).then(() => {
+        carService = undefined;
       });
     }
   });
@@ -113,6 +135,7 @@ describe('CarRepairAppointment e2e test', () => {
           body: {
             ...carRepairAppointmentSample,
             car: car,
+            carService: carService,
           },
         }).then(({ body }) => {
           carRepairAppointment = body;
@@ -201,6 +224,7 @@ describe('CarRepairAppointment e2e test', () => {
       cy.get(`[data-cy="date"]`).should('have.value', '2024-02-14');
 
       cy.get(`[data-cy="car"]`).select(1);
+      cy.get(`[data-cy="carService"]`).select(1);
 
       cy.get(entityCreateSaveButtonSelector).click();
 

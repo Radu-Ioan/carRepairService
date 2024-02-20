@@ -127,6 +127,10 @@ export const CarRepairAppointment = () => {
                 <th>
                   <Translate contentKey="carRepairServiceApp.carRepairAppointment.car">Car</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
+                <th>
+                  <Translate contentKey="carRepairServiceApp.carRepairAppointment.carService">Car Service</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
+                </th>
                 <th />
               </tr>
             </thead>
@@ -146,6 +150,13 @@ export const CarRepairAppointment = () => {
                   <td>
                     {carRepairAppointment.car ? (
                       <Link to={`/car/${carRepairAppointment.car.id}`}>{carRepairAppointment.car.ownerName}</Link>
+                    ) : (
+                      ''
+                    )}
+                  </td>
+                  <td>
+                    {carRepairAppointment.carService ? (
+                      <Link to={`/car-service/${carRepairAppointment.carService.id}`}>{carRepairAppointment.carService.address}</Link>
                     ) : (
                       ''
                     )}

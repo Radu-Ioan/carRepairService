@@ -102,6 +102,15 @@ public class CarRepairAppointmentQueryService extends QueryService<CarRepairAppo
                         buildSpecification(criteria.getCarId(), root -> root.join(CarRepairAppointment_.car, JoinType.LEFT).get(Car_.id))
                     );
             }
+            if (criteria.getCarServiceId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getCarServiceId(),
+                            root -> root.join(CarRepairAppointment_.carService, JoinType.LEFT).get(CarService_.id)
+                        )
+                    );
+            }
         }
         return specification;
     }

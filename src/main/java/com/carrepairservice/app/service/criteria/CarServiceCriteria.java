@@ -27,6 +27,8 @@ public class CarServiceCriteria implements Serializable, Criteria {
 
     private StringFilter address;
 
+    private LongFilter repairAppointmentsId;
+
     private Boolean distinct;
 
     public CarServiceCriteria() {}
@@ -35,6 +37,7 @@ public class CarServiceCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.name = other.name == null ? null : other.name.copy();
         this.address = other.address == null ? null : other.address.copy();
+        this.repairAppointmentsId = other.repairAppointmentsId == null ? null : other.repairAppointmentsId.copy();
         this.distinct = other.distinct;
     }
 
@@ -88,6 +91,21 @@ public class CarServiceCriteria implements Serializable, Criteria {
         this.address = address;
     }
 
+    public LongFilter getRepairAppointmentsId() {
+        return repairAppointmentsId;
+    }
+
+    public LongFilter repairAppointmentsId() {
+        if (repairAppointmentsId == null) {
+            repairAppointmentsId = new LongFilter();
+        }
+        return repairAppointmentsId;
+    }
+
+    public void setRepairAppointmentsId(LongFilter repairAppointmentsId) {
+        this.repairAppointmentsId = repairAppointmentsId;
+    }
+
     public Boolean getDistinct() {
         return distinct;
     }
@@ -109,13 +127,14 @@ public class CarServiceCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(name, that.name) &&
             Objects.equals(address, that.address) &&
+            Objects.equals(repairAppointmentsId, that.repairAppointmentsId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, address, distinct);
+        return Objects.hash(id, name, address, repairAppointmentsId, distinct);
     }
 
     // prettier-ignore
@@ -125,6 +144,7 @@ public class CarServiceCriteria implements Serializable, Criteria {
             (id != null ? "id=" + id + ", " : "") +
             (name != null ? "name=" + name + ", " : "") +
             (address != null ? "address=" + address + ", " : "") +
+            (repairAppointmentsId != null ? "repairAppointmentsId=" + repairAppointmentsId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

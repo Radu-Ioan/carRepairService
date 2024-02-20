@@ -19,7 +19,8 @@
       },
       "id": "ID",
       "date": "Date",
-      "car": "Car"
+      "car": "Car",
+      "carService": "Car Service"
     }
   }
 }

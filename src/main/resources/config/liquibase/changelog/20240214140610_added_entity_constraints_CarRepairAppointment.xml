@@ -14,5 +14,12 @@
                                  referencedColumnNames="id"
                                  referencedTableName="car"
                                  />
+
+        <addForeignKeyConstraint baseColumnNames="car_service_id"
+                                 baseTableName="car_repair_appointment"
+                                 constraintName="fk_car_repair_appointment__car_service_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="car_service"
+                                 />
     </changeSet>
 </databaseChangeLog>

@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.carrepairservice.app.IntegrationTest;
 import com.carrepairservice.app.domain.Car;
 import com.carrepairservice.app.domain.CarRepairAppointment;
+import com.carrepairservice.app.domain.CarService;
 import com.carrepairservice.app.repository.CarRepairAppointmentRepository;
 import com.carrepairservice.app.service.CarRepairAppointmentService;
 import com.carrepairservice.app.service.dto.CarRepairAppointmentDTO;
@@ -91,6 +92,16 @@ class CarRepairAppointmentResourceIT {
             car = TestUtil.findAll(em, Car.class).get(0);
         }
         carRepairAppointment.setCar(car);
+        // Add required entity
+        CarService carService;
+        if (TestUtil.findAll(em, CarService.class).isEmpty()) {
+            carService = CarServiceResourceIT.createEntity(em);
+            em.persist(carService);
+            em.flush();
+        } else {
+            carService = TestUtil.findAll(em, CarService.class).get(0);
+        }
+        carRepairAppointment.setCarService(carService);
         return carRepairAppointment;
     }
 
@@ -112,6 +123,16 @@ class CarRepairAppointmentResourceIT {
             car = TestUtil.findAll(em, Car.class).get(0);
         }
         carRepairAppointment.setCar(car);
+        // Add required entity
+        CarService carService;
+        if (TestUtil.findAll(em, CarService.class).isEmpty()) {
+            carService = CarServiceResourceIT.createUpdatedEntity(em);
+            em.persist(carService);
+            em.flush();
+        } else {
+            carService = TestUtil.findAll(em, CarService.class).get(0);
+        }
+        carRepairAppointment.setCarService(carService);
         return carRepairAppointment;
     }
 
@@ -354,6 +375,28 @@ class CarRepairAppointmentResourceIT {
 
         // Get all the carRepairAppointmentList where car equals to (carId + 1)
         defaultCarRepairAppointmentShouldNotBeFound("carId.equals=" + (carId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllCarRepairAppointmentsByCarServiceIsEqualToSomething() throws Exception {
+        CarService carService;
+        if (TestUtil.findAll(em, CarService.class).isEmpty()) {
+            carRepairAppointmentRepository.saveAndFlush(carRepairAppointment);
+            carService = CarServiceResourceIT.createEntity(em);
+        } else {
+            carService = TestUtil.findAll(em, CarService.class).get(0);
+        }
+        em.persist(carService);
+        em.flush();
+        carRepairAppointment.setCarService(carService);
+        carRepairAppointmentRepository.saveAndFlush(carRepairAppointment);
+        Long carServiceId = carService.getId();
+        // Get all the carRepairAppointmentList where carService equals to carServiceId
+        defaultCarRepairAppointmentShouldBeFound("carServiceId.equals=" + carServiceId);
+
+        // Get all the carRepairAppointmentList where carService equals to (carServiceId + 1)
+        defaultCarRepairAppointmentShouldNotBeFound("carServiceId.equals=" + (carServiceId + 1));
     }
 
     /**

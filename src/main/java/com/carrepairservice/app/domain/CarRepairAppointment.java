@@ -35,6 +35,11 @@ public class CarRepairAppointment implements Serializable {
     @JoinColumn(unique = true)
     private Car car;
 
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties(value = { "repairAppointments" }, allowSetters = true)
+    private CarService carService;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -73,6 +78,19 @@ public class CarRepairAppointment implements Serializable {
 
     public CarRepairAppointment car(Car car) {
         this.setCar(car);
+        return this;
+    }
+
+    public CarService getCarService() {
+        return this.carService;
+    }
+
+    public void setCarService(CarService carService) {
+        this.carService = carService;
+    }
+
+    public CarRepairAppointment carService(CarService carService) {
+        this.setCarService(carService);
         return this;
     }
 

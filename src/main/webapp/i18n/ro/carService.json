@@ -19,7 +19,8 @@
       },
       "id": "ID",
       "name": "Name",
-      "address": "Address"
+      "address": "Address",
+      "repairAppointments": "Repair Appointments"
     }
   }
 }

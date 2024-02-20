@@ -25,6 +25,15 @@
       "relationshipSide": "left",
       "relationshipType": "one-to-one",
       "relationshipValidateRules": ["required"]
+    },
+    {
+      "otherEntityField": "address",
+      "otherEntityName": "carService",
+      "otherEntityRelationshipName": "repairAppointments",
+      "relationshipName": "carService",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"]
     }
   ],
   "searchEngine": "no",

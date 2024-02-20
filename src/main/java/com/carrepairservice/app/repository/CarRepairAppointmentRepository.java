@@ -28,16 +28,18 @@ public interface CarRepairAppointmentRepository
     }
 
     @Query(
-        value = "select carRepairAppointment from CarRepairAppointment carRepairAppointment left join fetch carRepairAppointment.car",
+        value = "select carRepairAppointment from CarRepairAppointment carRepairAppointment left join fetch carRepairAppointment.car left join fetch carRepairAppointment.carService",
         countQuery = "select count(carRepairAppointment) from CarRepairAppointment carRepairAppointment"
     )
     Page<CarRepairAppointment> findAllWithToOneRelationships(Pageable pageable);
 
-    @Query("select carRepairAppointment from CarRepairAppointment carRepairAppointment left join fetch carRepairAppointment.car")
+    @Query(
+        "select carRepairAppointment from CarRepairAppointment carRepairAppointment left join fetch carRepairAppointment.car left join fetch carRepairAppointment.carService"
+    )
     List<CarRepairAppointment> findAllWithToOneRelationships();
 
     @Query(
-        "select carRepairAppointment from CarRepairAppointment carRepairAppointment left join fetch carRepairAppointment.car where carRepairAppointment.id =:id"
+        "select carRepairAppointment from CarRepairAppointment carRepairAppointment left join fetch carRepairAppointment.car left join fetch carRepairAppointment.carService where carRepairAppointment.id =:id"
     )
     Optional<CarRepairAppointment> findOneWithToOneRelationships(@Param("id") Long id);
 }

@@ -1,6 +1,7 @@
 package com.carrepairservice.app.domain;
 
 import static com.carrepairservice.app.domain.CarRepairAppointmentTestSamples.*;
+import static com.carrepairservice.app.domain.CarServiceTestSamples.*;
 import static com.carrepairservice.app.domain.CarTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,5 +34,17 @@ class CarRepairAppointmentTest {
 
         carRepairAppointment.car(null);
         assertThat(carRepairAppointment.getCar()).isNull();
+    }
+
+    @Test
+    void carServiceTest() throws Exception {
+        CarRepairAppointment carRepairAppointment = getCarRepairAppointmentRandomSampleGenerator();
+        CarService carServiceBack = getCarServiceRandomSampleGenerator();
+
+        carRepairAppointment.setCarService(carServiceBack);
+        assertThat(carRepairAppointment.getCarService()).isEqualTo(carServiceBack);
+
+        carRepairAppointment.carService(null);
+        assertThat(carRepairAppointment.getCarService()).isNull();
     }
 }

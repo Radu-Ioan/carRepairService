@@ -27,6 +27,8 @@ public class CarRepairAppointmentCriteria implements Serializable, Criteria {
 
     private LongFilter carId;
 
+    private LongFilter carServiceId;
+
     private Boolean distinct;
 
     public CarRepairAppointmentCriteria() {}
@@ -35,6 +37,7 @@ public class CarRepairAppointmentCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.date = other.date == null ? null : other.date.copy();
         this.carId = other.carId == null ? null : other.carId.copy();
+        this.carServiceId = other.carServiceId == null ? null : other.carServiceId.copy();
         this.distinct = other.distinct;
     }
 
@@ -88,6 +91,21 @@ public class CarRepairAppointmentCriteria implements Serializable, Criteria {
         this.carId = carId;
     }
 
+    public LongFilter getCarServiceId() {
+        return carServiceId;
+    }
+
+    public LongFilter carServiceId() {
+        if (carServiceId == null) {
+            carServiceId = new LongFilter();
+        }
+        return carServiceId;
+    }
+
+    public void setCarServiceId(LongFilter carServiceId) {
+        this.carServiceId = carServiceId;
+    }
+
     public Boolean getDistinct() {
         return distinct;
     }
@@ -109,13 +127,14 @@ public class CarRepairAppointmentCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(date, that.date) &&
             Objects.equals(carId, that.carId) &&
+            Objects.equals(carServiceId, that.carServiceId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, date, carId, distinct);
+        return Objects.hash(id, date, carId, carServiceId, distinct);
     }
 
     // prettier-ignore
@@ -125,6 +144,7 @@ public class CarRepairAppointmentCriteria implements Serializable, Criteria {
             (id != null ? "id=" + id + ", " : "") +
             (date != null ? "date=" + date + ", " : "") +
             (carId != null ? "carId=" + carId + ", " : "") +
+            (carServiceId != null ? "carServiceId=" + carServiceId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }
