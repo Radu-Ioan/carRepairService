@@ -43,6 +43,15 @@ export const CarServiceDetail = () => {
             </span>
           </dt>
           <dd>{carServiceEntity.address}</dd>
+          <dt>
+            <span id="repairs">repair appointments</span>
+          </dt>
+          <dd>
+            {carServiceEntity.repairAppointments &&
+              carServiceEntity.repairAppointments.map((app, idx) => {
+                return <div>{app.id}</div>;
+              })}
+          </dd>
         </dl>
         <Button tag={Link} to="/car-service" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}
