@@ -49,7 +49,13 @@ export const CarServiceDetail = () => {
           <dd>
             {carServiceEntity.repairAppointments &&
               carServiceEntity.repairAppointments.map((app, idx) => {
-                return <div>{app.id}</div>;
+                return (
+                  <>
+                    <Link to={'/car-repair-appointment/' + app.id} className="no-underline">
+                      {app.id}
+                    </Link>
+                  </>
+                );
               })}
           </dd>
         </dl>

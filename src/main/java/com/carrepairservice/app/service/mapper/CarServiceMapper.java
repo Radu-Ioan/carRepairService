@@ -7,5 +7,5 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link CarService} and its DTO {@link CarServiceDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = CarRepairAppointmentMapper.class)
 public interface CarServiceMapper extends EntityMapper<CarServiceDTO, CarService> {}
