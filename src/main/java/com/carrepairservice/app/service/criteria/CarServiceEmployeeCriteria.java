@@ -29,6 +29,8 @@ public class CarServiceEmployeeCriteria implements Serializable, Criteria {
 
     private IntegerFilter yearsOfExperience;
 
+    private LongFilter carServiceId;
+
     private Boolean distinct;
 
     public CarServiceEmployeeCriteria() {}
@@ -38,6 +40,7 @@ public class CarServiceEmployeeCriteria implements Serializable, Criteria {
         this.name = other.name == null ? null : other.name.copy();
         this.age = other.age == null ? null : other.age.copy();
         this.yearsOfExperience = other.yearsOfExperience == null ? null : other.yearsOfExperience.copy();
+        this.carServiceId = other.carServiceId == null ? null : other.carServiceId.copy();
         this.distinct = other.distinct;
     }
 
@@ -106,6 +109,21 @@ public class CarServiceEmployeeCriteria implements Serializable, Criteria {
         this.yearsOfExperience = yearsOfExperience;
     }
 
+    public LongFilter getCarServiceId() {
+        return carServiceId;
+    }
+
+    public LongFilter carServiceId() {
+        if (carServiceId == null) {
+            carServiceId = new LongFilter();
+        }
+        return carServiceId;
+    }
+
+    public void setCarServiceId(LongFilter carServiceId) {
+        this.carServiceId = carServiceId;
+    }
+
     public Boolean getDistinct() {
         return distinct;
     }
@@ -128,13 +146,14 @@ public class CarServiceEmployeeCriteria implements Serializable, Criteria {
             Objects.equals(name, that.name) &&
             Objects.equals(age, that.age) &&
             Objects.equals(yearsOfExperience, that.yearsOfExperience) &&
+            Objects.equals(carServiceId, that.carServiceId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, age, yearsOfExperience, distinct);
+        return Objects.hash(id, name, age, yearsOfExperience, carServiceId, distinct);
     }
 
     // prettier-ignore
@@ -145,6 +164,7 @@ public class CarServiceEmployeeCriteria implements Serializable, Criteria {
             (name != null ? "name=" + name + ", " : "") +
             (age != null ? "age=" + age + ", " : "") +
             (yearsOfExperience != null ? "yearsOfExperience=" + yearsOfExperience + ", " : "") +
+            (carServiceId != null ? "carServiceId=" + carServiceId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

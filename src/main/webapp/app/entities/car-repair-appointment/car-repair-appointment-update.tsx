@@ -116,7 +116,6 @@ export const CarRepairAppointmentUpdate = () => {
                 validate={{
                   required: { value: true, message: translate('entity.validation.required') },
                 }}
-                minDate={new Date()}
               />
               <ValidatedField
                 id="car-repair-appointment-car"
@@ -128,15 +127,11 @@ export const CarRepairAppointmentUpdate = () => {
               >
                 <option value="" key="0" />
                 {cars
-                  ? cars.map(carEntity => {
-                      return carEntity.carRepairAppointment == null ? (
-                        <option value={carEntity.id} key={carEntity.id}>
-                          {carEntity.ownerName}
-                        </option>
-                      ) : (
-                        <></>
-                      );
-                    })
+                  ? cars.map(otherEntity => (
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.ownerName}
+                      </option>
+                    ))
                   : null}
               </ValidatedField>
               <FormText>
@@ -152,15 +147,11 @@ export const CarRepairAppointmentUpdate = () => {
               >
                 <option value="" key="0" />
                 {carServices
-                  ? carServices.map(serviceEntity => {
-                      const selectedDate = null;
-                      serviceEntity.repairAppointments.filter(app => app.date == selectedDate);
-                      return (
-                        <option value={serviceEntity.id} key={serviceEntity.id}>
-                          {serviceEntity.address}
-                        </option>
-                      );
-                    })
+                  ? carServices.map(otherEntity => (
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.address}
+                      </option>
+                    ))
                   : null}
               </ValidatedField>
               <FormText>

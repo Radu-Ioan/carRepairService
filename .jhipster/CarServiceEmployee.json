@@ -28,7 +28,17 @@
   "name": "CarServiceEmployee",
   "pagination": "pagination",
   "readOnly": false,
-  "relationships": [],
+  "relationships": [
+    {
+      "otherEntityField": "address",
+      "otherEntityName": "carService",
+      "otherEntityRelationshipName": "employees",
+      "relationshipName": "carService",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"]
+    }
+  ],
   "searchEngine": "no",
   "service": "serviceImpl"
 }

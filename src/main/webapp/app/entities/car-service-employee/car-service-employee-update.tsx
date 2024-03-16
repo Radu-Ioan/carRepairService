@@ -8,6 +8,8 @@ import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateT
 import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
+import { ICarService } from 'app/shared/model/car-service.model';
+import { getEntities as getCarServices } from 'app/entities/car-service/car-service.reducer';
 import { ICarServiceEmployee } from 'app/shared/model/car-service-employee.model';
 import { getEntity, updateEntity, createEntity, reset } from './car-service-employee.reducer';
 
@@ -19,6 +21,7 @@ export const CarServiceEmployeeUpdate = () => {
   const { id } = useParams<'id'>();
   const isNew = id === undefined;
 
+  const carServices = useAppSelector(state => state.carService.entities);
   const carServiceEmployeeEntity = useAppSelector(state => state.carServiceEmployee.entity);
   const loading = useAppSelector(state => state.carServiceEmployee.loading);
   const updating = useAppSelector(state => state.carServiceEmployee.updating);
@@ -34,6 +37,8 @@ export const CarServiceEmployeeUpdate = () => {
     } else {
       dispatch(getEntity(id));
     }
+
+    dispatch(getCarServices({}));
   }, []);
 
   useEffect(() => {
@@ -57,6 +62,7 @@ export const CarServiceEmployeeUpdate = () => {
     const entity = {
       ...carServiceEmployeeEntity,
       ...values,
+      carService: carServices.find(it => it.id.toString() === values.carService.toString()),
     };
 
     if (isNew) {
@@ -71,6 +77,7 @@ export const CarServiceEmployeeUpdate = () => {
       ? {}
       : {
           ...carServiceEmployeeEntity,
+          carService: carServiceEmployeeEntity?.carService?.id,
         };
 
   return (
@@ -133,6 +140,26 @@ export const CarServiceEmployeeUpdate = () => {
                   validate: v => isNumber(v) || translate('entity.validation.number'),
                 }}
               />
+              <ValidatedField
+                id="car-service-employee-carService"
+                name="carService"
+                data-cy="carService"
+                label={translate('carRepairServiceApp.carServiceEmployee.carService')}
+                type="select"
+                required
+              >
+                <option value="" key="0" />
+                {carServices
+                  ? carServices.map(otherEntity => (
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.address}
+                      </option>
+                    ))
+                  : null}
+              </ValidatedField>
+              <FormText>
+                <Translate contentKey="entity.validation.required">This field is required.</Translate>
+              </FormText>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/car-service-employee" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

@@ -1,6 +1,7 @@
 package com.carrepairservice.app.domain;
 
 import static com.carrepairservice.app.domain.CarRepairAppointmentTestSamples.*;
+import static com.carrepairservice.app.domain.CarServiceEmployeeTestSamples.*;
 import static com.carrepairservice.app.domain.CarServiceTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -45,5 +46,27 @@ class CarServiceTest {
         carService.setRepairAppointments(new HashSet<>());
         assertThat(carService.getRepairAppointments()).doesNotContain(carRepairAppointmentBack);
         assertThat(carRepairAppointmentBack.getCarService()).isNull();
+    }
+
+    @Test
+    void employeesTest() throws Exception {
+        CarService carService = getCarServiceRandomSampleGenerator();
+        CarServiceEmployee carServiceEmployeeBack = getCarServiceEmployeeRandomSampleGenerator();
+
+        carService.addEmployees(carServiceEmployeeBack);
+        assertThat(carService.getEmployees()).containsOnly(carServiceEmployeeBack);
+        assertThat(carServiceEmployeeBack.getCarService()).isEqualTo(carService);
+
+        carService.removeEmployees(carServiceEmployeeBack);
+        assertThat(carService.getEmployees()).doesNotContain(carServiceEmployeeBack);
+        assertThat(carServiceEmployeeBack.getCarService()).isNull();
+
+        carService.employees(new HashSet<>(Set.of(carServiceEmployeeBack)));
+        assertThat(carService.getEmployees()).containsOnly(carServiceEmployeeBack);
+        assertThat(carServiceEmployeeBack.getCarService()).isEqualTo(carService);
+
+        carService.setEmployees(new HashSet<>());
+        assertThat(carService.getEmployees()).doesNotContain(carServiceEmployeeBack);
+        assertThat(carServiceEmployeeBack.getCarService()).isNull();
     }
 }

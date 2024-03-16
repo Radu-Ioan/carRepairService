@@ -38,6 +38,11 @@ public class CarService implements Serializable {
     @JsonIgnoreProperties(value = { "car", "carService" }, allowSetters = true)
     private Set<CarRepairAppointment> repairAppointments = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "carService")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "carService" }, allowSetters = true)
+    private Set<CarServiceEmployee> employees = new HashSet<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -107,6 +112,37 @@ public class CarService implements Serializable {
     public CarService removeRepairAppointments(CarRepairAppointment carRepairAppointment) {
         this.repairAppointments.remove(carRepairAppointment);
         carRepairAppointment.setCarService(null);
+        return this;
+    }
+
+    public Set<CarServiceEmployee> getEmployees() {
+        return this.employees;
+    }
+
+    public void setEmployees(Set<CarServiceEmployee> carServiceEmployees) {
+        if (this.employees != null) {
+            this.employees.forEach(i -> i.setCarService(null));
+        }
+        if (carServiceEmployees != null) {
+            carServiceEmployees.forEach(i -> i.setCarService(this));
+        }
+        this.employees = carServiceEmployees;
+    }
+
+    public CarService employees(Set<CarServiceEmployee> carServiceEmployees) {
+        this.setEmployees(carServiceEmployees);
+        return this;
+    }
+
+    public CarService addEmployees(CarServiceEmployee carServiceEmployee) {
+        this.employees.add(carServiceEmployee);
+        carServiceEmployee.setCarService(this);
+        return this;
+    }
+
+    public CarService removeEmployees(CarServiceEmployee carServiceEmployee) {
+        this.employees.remove(carServiceEmployee);
+        carServiceEmployee.setCarService(null);
         return this;
     }
 

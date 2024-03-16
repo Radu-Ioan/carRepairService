@@ -2,22 +2,31 @@ package com.carrepairservice.app.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.carrepairservice.app.IntegrationTest;
+import com.carrepairservice.app.domain.CarService;
 import com.carrepairservice.app.domain.CarServiceEmployee;
 import com.carrepairservice.app.repository.CarServiceEmployeeRepository;
+import com.carrepairservice.app.service.CarServiceEmployeeService;
 import com.carrepairservice.app.service.dto.CarServiceEmployeeDTO;
 import com.carrepairservice.app.service.mapper.CarServiceEmployeeMapper;
 import jakarta.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Integration tests for the {@link CarServiceEmployeeResource} REST controller.
  */
 @IntegrationTest
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 class CarServiceEmployeeResourceIT {
@@ -51,8 +61,14 @@ class CarServiceEmployeeResourceIT {
     @Autowired
     private CarServiceEmployeeRepository carServiceEmployeeRepository;
 
+    @Mock
+    private CarServiceEmployeeRepository carServiceEmployeeRepositoryMock;
+
     @Autowired
     private CarServiceEmployeeMapper carServiceEmployeeMapper;
+
+    @Mock
+    private CarServiceEmployeeService carServiceEmployeeServiceMock;
 
     @Autowired
     private EntityManager em;
@@ -73,6 +89,16 @@ class CarServiceEmployeeResourceIT {
             .name(DEFAULT_NAME)
             .age(DEFAULT_AGE)
             .yearsOfExperience(DEFAULT_YEARS_OF_EXPERIENCE);
+        // Add required entity
+        CarService carService;
+        if (TestUtil.findAll(em, CarService.class).isEmpty()) {
+            carService = CarServiceResourceIT.createEntity(em);
+            em.persist(carService);
+            em.flush();
+        } else {
+            carService = TestUtil.findAll(em, CarService.class).get(0);
+        }
+        carServiceEmployee.setCarService(carService);
         return carServiceEmployee;
     }
 
@@ -87,6 +113,16 @@ class CarServiceEmployeeResourceIT {
             .name(UPDATED_NAME)
             .age(UPDATED_AGE)
             .yearsOfExperience(UPDATED_YEARS_OF_EXPERIENCE);
+        // Add required entity
+        CarService carService;
+        if (TestUtil.findAll(em, CarService.class).isEmpty()) {
+            carService = CarServiceResourceIT.createUpdatedEntity(em);
+            em.persist(carService);
+            em.flush();
+        } else {
+            carService = TestUtil.findAll(em, CarService.class).get(0);
+        }
+        carServiceEmployee.setCarService(carService);
         return carServiceEmployee;
     }
 
@@ -178,6 +214,23 @@ class CarServiceEmployeeResourceIT {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].age").value(hasItem(DEFAULT_AGE)))
             .andExpect(jsonPath("$.[*].yearsOfExperience").value(hasItem(DEFAULT_YEARS_OF_EXPERIENCE)));
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllCarServiceEmployeesWithEagerRelationshipsIsEnabled() throws Exception {
+        when(carServiceEmployeeServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restCarServiceEmployeeMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
+
+        verify(carServiceEmployeeServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllCarServiceEmployeesWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(carServiceEmployeeServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restCarServiceEmployeeMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
+        verify(carServiceEmployeeRepositoryMock, times(1)).findAll(any(Pageable.class));
     }
 
     @Test
@@ -460,6 +513,28 @@ class CarServiceEmployeeResourceIT {
 
         // Get all the carServiceEmployeeList where yearsOfExperience is greater than SMALLER_YEARS_OF_EXPERIENCE
         defaultCarServiceEmployeeShouldBeFound("yearsOfExperience.greaterThan=" + SMALLER_YEARS_OF_EXPERIENCE);
+    }
+
+    @Test
+    @Transactional
+    void getAllCarServiceEmployeesByCarServiceIsEqualToSomething() throws Exception {
+        CarService carService;
+        if (TestUtil.findAll(em, CarService.class).isEmpty()) {
+            carServiceEmployeeRepository.saveAndFlush(carServiceEmployee);
+            carService = CarServiceResourceIT.createEntity(em);
+        } else {
+            carService = TestUtil.findAll(em, CarService.class).get(0);
+        }
+        em.persist(carService);
+        em.flush();
+        carServiceEmployee.setCarService(carService);
+        carServiceEmployeeRepository.saveAndFlush(carServiceEmployee);
+        Long carServiceId = carService.getId();
+        // Get all the carServiceEmployeeList where carService equals to carServiceId
+        defaultCarServiceEmployeeShouldBeFound("carServiceId.equals=" + carServiceId);
+
+        // Get all the carServiceEmployeeList where carService equals to (carServiceId + 1)
+        defaultCarServiceEmployeeShouldNotBeFound("carServiceId.equals=" + (carServiceId + 1));
     }
 
     /**

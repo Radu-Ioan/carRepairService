@@ -6,6 +6,7 @@ import com.carrepairservice.app.repository.CarServiceEmployeeRepository;
 import com.carrepairservice.app.service.criteria.CarServiceEmployeeCriteria;
 import com.carrepairservice.app.service.dto.CarServiceEmployeeDTO;
 import com.carrepairservice.app.service.mapper.CarServiceEmployeeMapper;
+import jakarta.persistence.criteria.JoinType;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,6 +102,15 @@ public class CarServiceEmployeeQueryService extends QueryService<CarServiceEmplo
             if (criteria.getYearsOfExperience() != null) {
                 specification =
                     specification.and(buildRangeSpecification(criteria.getYearsOfExperience(), CarServiceEmployee_.yearsOfExperience));
+            }
+            if (criteria.getCarServiceId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getCarServiceId(),
+                            root -> root.join(CarServiceEmployee_.carService, JoinType.LEFT).get(CarService_.id)
+                        )
+                    );
             }
         }
         return specification;

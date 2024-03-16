@@ -18,15 +18,35 @@ describe('CarServiceEmployee e2e test', () => {
   const carServiceEmployeeSample = { name: 'vaguely famously' };
 
   let carServiceEmployee;
+  let carService;
 
   beforeEach(() => {
     cy.login(username, password);
   });
 
   beforeEach(() => {
+    // create an instance at the required relationship entity:
+    cy.authenticatedRequest({
+      method: 'POST',
+      url: '/api/car-services',
+      body: { name: 'harsh', address: 'bah' },
+    }).then(({ body }) => {
+      carService = body;
+    });
+  });
+
+  beforeEach(() => {
     cy.intercept('GET', '/api/car-service-employees+(?*|)').as('entitiesRequest');
     cy.intercept('POST', '/api/car-service-employees').as('postEntityRequest');
     cy.intercept('DELETE', '/api/car-service-employees/*').as('deleteEntityRequest');
+  });
+
+  beforeEach(() => {
+    // Simulate relationships api for better performance and reproducibility.
+    cy.intercept('GET', '/api/car-services', {
+      statusCode: 200,
+      body: [carService],
+    });
   });
 
   afterEach(() => {
@@ -36,6 +56,17 @@ describe('CarServiceEmployee e2e test', () => {
         url: `/api/car-service-employees/${carServiceEmployee.id}`,
       }).then(() => {
         carServiceEmployee = undefined;
+      });
+    }
+  });
+
+  afterEach(() => {
+    if (carService) {
+      cy.authenticatedRequest({
+        method: 'DELETE',
+        url: `/api/car-services/${carService.id}`,
+      }).then(() => {
+        carService = undefined;
       });
     }
   });
@@ -79,7 +110,10 @@ describe('CarServiceEmployee e2e test', () => {
         cy.authenticatedRequest({
           method: 'POST',
           url: '/api/car-service-employees',
-          body: carServiceEmployeeSample,
+          body: {
+            ...carServiceEmployeeSample,
+            carService: carService,
+          },
         }).then(({ body }) => {
           carServiceEmployee = body;
 
@@ -170,6 +204,8 @@ describe('CarServiceEmployee e2e test', () => {
 
       cy.get(`[data-cy="yearsOfExperience"]`).type('3109');
       cy.get(`[data-cy="yearsOfExperience"]`).should('have.value', '3109');
+
+      cy.get(`[data-cy="carService"]`).select(1);
 
       cy.get(entityCreateSaveButtonSelector).click();
 

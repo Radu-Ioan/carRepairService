@@ -49,6 +49,10 @@ export const CarServiceEmployeeDetail = () => {
             </span>
           </dt>
           <dd>{carServiceEmployeeEntity.yearsOfExperience}</dd>
+          <dt>
+            <Translate contentKey="carRepairServiceApp.carServiceEmployee.carService">Car Service</Translate>
+          </dt>
+          <dd>{carServiceEmployeeEntity.carService ? carServiceEmployeeEntity.carService.address : ''}</dd>
         </dl>
         <Button tag={Link} to="/car-service-employee" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}

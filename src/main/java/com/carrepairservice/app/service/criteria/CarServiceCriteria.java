@@ -29,6 +29,8 @@ public class CarServiceCriteria implements Serializable, Criteria {
 
     private LongFilter repairAppointmentsId;
 
+    private LongFilter employeesId;
+
     private Boolean distinct;
 
     public CarServiceCriteria() {}
@@ -38,6 +40,7 @@ public class CarServiceCriteria implements Serializable, Criteria {
         this.name = other.name == null ? null : other.name.copy();
         this.address = other.address == null ? null : other.address.copy();
         this.repairAppointmentsId = other.repairAppointmentsId == null ? null : other.repairAppointmentsId.copy();
+        this.employeesId = other.employeesId == null ? null : other.employeesId.copy();
         this.distinct = other.distinct;
     }
 
@@ -106,6 +109,21 @@ public class CarServiceCriteria implements Serializable, Criteria {
         this.repairAppointmentsId = repairAppointmentsId;
     }
 
+    public LongFilter getEmployeesId() {
+        return employeesId;
+    }
+
+    public LongFilter employeesId() {
+        if (employeesId == null) {
+            employeesId = new LongFilter();
+        }
+        return employeesId;
+    }
+
+    public void setEmployeesId(LongFilter employeesId) {
+        this.employeesId = employeesId;
+    }
+
     public Boolean getDistinct() {
         return distinct;
     }
@@ -128,13 +146,14 @@ public class CarServiceCriteria implements Serializable, Criteria {
             Objects.equals(name, that.name) &&
             Objects.equals(address, that.address) &&
             Objects.equals(repairAppointmentsId, that.repairAppointmentsId) &&
+            Objects.equals(employeesId, that.employeesId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, address, repairAppointmentsId, distinct);
+        return Objects.hash(id, name, address, repairAppointmentsId, employeesId, distinct);
     }
 
     // prettier-ignore
@@ -145,6 +164,7 @@ public class CarServiceCriteria implements Serializable, Criteria {
             (name != null ? "name=" + name + ", " : "") +
             (address != null ? "address=" + address + ", " : "") +
             (repairAppointmentsId != null ? "repairAppointmentsId=" + repairAppointmentsId + ", " : "") +
+            (employeesId != null ? "employeesId=" + employeesId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

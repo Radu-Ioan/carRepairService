@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link Car} and its DTO {@link CarDTO}.
  */
-@Mapper(componentModel = "spring", uses = CarRepairAppointmentMapper.class)
+@Mapper(componentModel = "spring")
 public interface CarMapper extends EntityMapper<CarDTO, Car> {
     @Mapping(target = "carRepairAppointment", source = "carRepairAppointment", qualifiedByName = "carRepairAppointmentDate")
     CarDTO toDto(Car s);

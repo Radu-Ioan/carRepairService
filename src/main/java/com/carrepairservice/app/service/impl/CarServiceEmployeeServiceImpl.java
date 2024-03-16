@@ -72,11 +72,15 @@ public class CarServiceEmployeeServiceImpl implements CarServiceEmployeeService 
         return carServiceEmployeeRepository.findAll(pageable).map(carServiceEmployeeMapper::toDto);
     }
 
+    public Page<CarServiceEmployeeDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return carServiceEmployeeRepository.findAllWithEagerRelationships(pageable).map(carServiceEmployeeMapper::toDto);
+    }
+
     @Override
     @Transactional(readOnly = true)
     public Optional<CarServiceEmployeeDTO> findOne(Long id) {
         log.debug("Request to get CarServiceEmployee : {}", id);
-        return carServiceEmployeeRepository.findById(id).map(carServiceEmployeeMapper::toDto);
+        return carServiceEmployeeRepository.findOneWithEagerRelationships(id).map(carServiceEmployeeMapper::toDto);
     }
 
     @Override

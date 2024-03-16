@@ -22,6 +22,8 @@ public class CarServiceEmployeeDTO implements Serializable {
     @Min(value = 0)
     private Integer yearsOfExperience;
 
+    private CarServiceDTO carService;
+
     public Long getId() {
         return id;
     }
@@ -54,6 +56,14 @@ public class CarServiceEmployeeDTO implements Serializable {
         this.yearsOfExperience = yearsOfExperience;
     }
 
+    public CarServiceDTO getCarService() {
+        return carService;
+    }
+
+    public void setCarService(CarServiceDTO carService) {
+        this.carService = carService;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -83,6 +93,7 @@ public class CarServiceEmployeeDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", age=" + getAge() +
             ", yearsOfExperience=" + getYearsOfExperience() +
+            ", carService=" + getCarService() +
             "}";
     }
 }

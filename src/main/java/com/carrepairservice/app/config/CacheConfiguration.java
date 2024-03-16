@@ -53,6 +53,7 @@ public class CacheConfiguration {
             createCache(cm, com.carrepairservice.app.domain.CarServiceEmployee.class.getName());
             createCache(cm, com.carrepairservice.app.domain.CarRepairAppointment.class.getName());
             createCache(cm, com.carrepairservice.app.domain.CarService.class.getName() + ".repairAppointments");
+            createCache(cm, com.carrepairservice.app.domain.CarService.class.getName() + ".employees");
             // jhipster-needle-ehcache-add-entry
         };
     }

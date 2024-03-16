@@ -105,6 +105,15 @@ public class CarServiceQueryService extends QueryService<CarService> {
                         )
                     );
             }
+            if (criteria.getEmployeesId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getEmployeesId(),
+                            root -> root.join(CarService_.employees, JoinType.LEFT).get(CarServiceEmployee_.id)
+                        )
+                    );
+            }
         }
         return specification;
     }

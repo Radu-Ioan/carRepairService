@@ -131,6 +131,10 @@ export const CarServiceEmployee = () => {
                   <Translate contentKey="carRepairServiceApp.carServiceEmployee.yearsOfExperience">Years Of Experience</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('yearsOfExperience')} />
                 </th>
+                <th>
+                  <Translate contentKey="carRepairServiceApp.carServiceEmployee.carService">Car Service</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
+                </th>
                 <th />
               </tr>
             </thead>
@@ -145,6 +149,13 @@ export const CarServiceEmployee = () => {
                   <td>{carServiceEmployee.name}</td>
                   <td>{carServiceEmployee.age}</td>
                   <td>{carServiceEmployee.yearsOfExperience}</td>
+                  <td>
+                    {carServiceEmployee.carService ? (
+                      <Link to={`/car-service/${carServiceEmployee.carService.id}`}>{carServiceEmployee.carService.address}</Link>
+                    ) : (
+                      ''
+                    )}
+                  </td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
                       <Button

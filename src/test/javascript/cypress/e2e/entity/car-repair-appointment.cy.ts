@@ -38,7 +38,7 @@ describe('CarRepairAppointment e2e test', () => {
     cy.authenticatedRequest({
       method: 'POST',
       url: '/api/car-services',
-      body: { name: 'harsh', address: 'bah' },
+      body: { name: 'mysterious dependent now', address: 'chlorinate prickly phooey' },
     }).then(({ body }) => {
       carService = body;
     });
