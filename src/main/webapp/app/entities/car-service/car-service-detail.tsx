@@ -43,12 +43,27 @@ export const CarServiceDetail = () => {
             </span>
           </dt>
           <dd>{carServiceEntity.address}</dd>
+          <dt>
+            <span>Repair appointments</span>
+          </dt>
+          <dd>
+            {carServiceEntity.repairAppointments &&
+              carServiceEntity.repairAppointments.map((app, idx) => {
+                return <Link to={`/car-repair-appointment/${app.id}`}>{app.id}</Link>;
+              })}
+          </dd>
+          <dt>
+            <span>Employees</span>
+          </dt>
+          <dd>
+            {carServiceEntity.employees &&
+              carServiceEntity.employees.map((emp, idx) => {
+                return <Link to={`/car-service-employee/${emp.id}`}>{emp.name}</Link>;
+              })}
+          </dd>
         </dl>
         <Button tag={Link} to="/car-service" replace color="info" data-cy="entityDetailsBackButton">
-          <FontAwesomeIcon icon="arrow-left" />{' '}
-          <span className="d-none d-md-inline">
-            <Translate contentKey="entity.action.back">Back</Translate>
-          </span>
+          <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">All car services</span>
         </Button>
         &nbsp;
         <Button tag={Link} to={`/car-service/${carServiceEntity.id}/edit`} replace color="primary">
