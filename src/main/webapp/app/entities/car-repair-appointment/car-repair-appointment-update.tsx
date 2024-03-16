@@ -133,11 +133,15 @@ export const CarRepairAppointmentUpdate = () => {
               >
                 <option value="" key="0" />
                 {cars
-                  ? cars.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.ownerName}
-                      </option>
-                    ))
+                  ? cars.map(carEntity => {
+                      return carEntity.carRepairAppointment == null ? (
+                        <option value={carEntity.id} key={carEntity.id}>
+                          {carEntity.ownerName}
+                        </option>
+                      ) : (
+                        <></>
+                      );
+                    })
                   : null}
               </ValidatedField>
               <FormText>

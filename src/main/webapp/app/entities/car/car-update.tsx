@@ -130,22 +130,6 @@ export const CarUpdate = () => {
                   required: { value: true, message: translate('entity.validation.required') },
                 }}
               />
-              <ValidatedField
-                id="car-carRepairAppointment"
-                name="carRepairAppointment"
-                data-cy="carRepairAppointment"
-                label={translate('carRepairServiceApp.car.carRepairAppointment')}
-                type="select"
-              >
-                <option value="" key="0" />
-                {carRepairAppointments
-                  ? carRepairAppointments.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.date}
-                      </option>
-                    ))
-                  : null}
-              </ValidatedField>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/car" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
