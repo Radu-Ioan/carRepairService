@@ -21,5 +21,19 @@
                                  referencedColumnNames="id"
                                  referencedTableName="car_service"
                                  />
+
+        <addForeignKeyConstraint baseColumnNames="car_repair_appointment_id"
+                                 baseTableName="rel_car_repair_appointment__responsible_employees"
+                                 constraintName="fk_rel_car_repair_appointment____car_repair_appointment_04_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="car_repair_appointment"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="responsible_employees_id"
+                                 baseTableName="rel_car_repair_appointment__responsible_employees"
+                                 constraintName="fk_rel_car_repair_appointment____responsible_employees_4e_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="car_service_employee"
+                                 />
     </changeSet>
 </databaseChangeLog>

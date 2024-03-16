@@ -58,18 +58,14 @@ class CarRepairAppointmentTest {
 
         carRepairAppointment.addResponsibleEmployees(carServiceEmployeeBack);
         assertThat(carRepairAppointment.getResponsibleEmployees()).containsOnly(carServiceEmployeeBack);
-        assertThat(carServiceEmployeeBack.getRepairAppointments()).containsOnly(carRepairAppointment);
 
         carRepairAppointment.removeResponsibleEmployees(carServiceEmployeeBack);
         assertThat(carRepairAppointment.getResponsibleEmployees()).doesNotContain(carServiceEmployeeBack);
-        assertThat(carServiceEmployeeBack.getRepairAppointments()).doesNotContain(carRepairAppointment);
 
         carRepairAppointment.responsibleEmployees(new HashSet<>(Set.of(carServiceEmployeeBack)));
         assertThat(carRepairAppointment.getResponsibleEmployees()).containsOnly(carServiceEmployeeBack);
-        assertThat(carServiceEmployeeBack.getRepairAppointments()).containsOnly(carRepairAppointment);
 
         carRepairAppointment.setResponsibleEmployees(new HashSet<>());
         assertThat(carRepairAppointment.getResponsibleEmployees()).doesNotContain(carServiceEmployeeBack);
-        assertThat(carServiceEmployeeBack.getRepairAppointments()).doesNotContain(carRepairAppointment);
     }
 }

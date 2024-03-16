@@ -3,7 +3,9 @@ package com.carrepairservice.app.service.dto;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A DTO for the {@link com.carrepairservice.app.domain.CarRepairAppointment} entity.
@@ -19,6 +21,8 @@ public class CarRepairAppointmentDTO implements Serializable {
     private CarDTO car;
 
     private CarServiceDTO carService;
+
+    private Set<CarServiceEmployeeDTO> responsibleEmployees = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -52,6 +56,14 @@ public class CarRepairAppointmentDTO implements Serializable {
         this.carService = carService;
     }
 
+    public Set<CarServiceEmployeeDTO> getResponsibleEmployees() {
+        return responsibleEmployees;
+    }
+
+    public void setResponsibleEmployees(Set<CarServiceEmployeeDTO> responsibleEmployees) {
+        this.responsibleEmployees = responsibleEmployees;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -81,6 +93,7 @@ public class CarRepairAppointmentDTO implements Serializable {
             ", date='" + getDate() + "'" +
             ", car=" + getCar() +
             ", carService=" + getCarService() +
+            ", responsibleEmployees=" + getResponsibleEmployees() +
             "}";
     }
 }

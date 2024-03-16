@@ -64,6 +64,7 @@ export const CarRepairAppointmentUpdate = () => {
     const entity = {
       ...carRepairAppointmentEntity,
       ...values,
+      responsibleEmployees: mapIdList(values.responsibleEmployees),
       car: cars.find(it => it.id.toString() === values.car.toString()),
       carService: carServices.find(it => it.id.toString() === values.carService.toString()),
     };
@@ -82,6 +83,7 @@ export const CarRepairAppointmentUpdate = () => {
           ...carRepairAppointmentEntity,
           car: carRepairAppointmentEntity?.car?.id,
           carService: carRepairAppointmentEntity?.carService?.id,
+          responsibleEmployees: carRepairAppointmentEntity?.responsibleEmployees?.map(e => e.id.toString()),
         };
 
   return (
@@ -161,6 +163,23 @@ export const CarRepairAppointmentUpdate = () => {
               <FormText>
                 <Translate contentKey="entity.validation.required">This field is required.</Translate>
               </FormText>
+              <ValidatedField
+                label={translate('carRepairServiceApp.carRepairAppointment.responsibleEmployees')}
+                id="car-repair-appointment-responsibleEmployees"
+                data-cy="responsibleEmployees"
+                type="select"
+                multiple
+                name="responsibleEmployees"
+              >
+                <option value="" key="0" />
+                {carServiceEmployees
+                  ? carServiceEmployees.map(otherEntity => (
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.name}
+                      </option>
+                    ))
+                  : null}
+              </ValidatedField>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/car-repair-appointment" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

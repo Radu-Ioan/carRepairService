@@ -42,7 +42,12 @@ public class CarRepairAppointment implements Serializable {
     @JsonIgnoreProperties(value = { "repairAppointments", "employees" }, allowSetters = true)
     private CarService carService;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "repairAppointments")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "rel_car_repair_appointment__responsible_employees",
+        joinColumns = @JoinColumn(name = "car_repair_appointment_id"),
+        inverseJoinColumns = @JoinColumn(name = "responsible_employees_id")
+    )
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "carService", "repairAppointments" }, allowSetters = true)
     private Set<CarServiceEmployee> responsibleEmployees = new HashSet<>();
@@ -106,12 +111,6 @@ public class CarRepairAppointment implements Serializable {
     }
 
     public void setResponsibleEmployees(Set<CarServiceEmployee> carServiceEmployees) {
-        if (this.responsibleEmployees != null) {
-            this.responsibleEmployees.forEach(i -> i.removeRepairAppointments(this));
-        }
-        if (carServiceEmployees != null) {
-            carServiceEmployees.forEach(i -> i.addRepairAppointments(this));
-        }
         this.responsibleEmployees = carServiceEmployees;
     }
 
@@ -122,13 +121,11 @@ public class CarRepairAppointment implements Serializable {
 
     public CarRepairAppointment addResponsibleEmployees(CarServiceEmployee carServiceEmployee) {
         this.responsibleEmployees.add(carServiceEmployee);
-        carServiceEmployee.getRepairAppointments().add(this);
         return this;
     }
 
     public CarRepairAppointment removeResponsibleEmployees(CarServiceEmployee carServiceEmployee) {
         this.responsibleEmployees.remove(carServiceEmployee);
-        carServiceEmployee.getRepairAppointments().remove(this);
         return this;
     }
 

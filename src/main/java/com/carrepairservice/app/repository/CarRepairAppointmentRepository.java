@@ -11,20 +11,26 @@ import org.springframework.stereotype.Repository;
 
 /**
  * Spring Data JPA repository for the CarRepairAppointment entity.
+ *
+ * When extending this class, extend CarRepairAppointmentRepositoryWithBagRelationships too.
+ * For more information refer to https://github.com/jhipster/generator-jhipster/issues/17990.
  */
 @Repository
 public interface CarRepairAppointmentRepository
-    extends JpaRepository<CarRepairAppointment, Long>, JpaSpecificationExecutor<CarRepairAppointment> {
+    extends
+        CarRepairAppointmentRepositoryWithBagRelationships,
+        JpaRepository<CarRepairAppointment, Long>,
+        JpaSpecificationExecutor<CarRepairAppointment> {
     default Optional<CarRepairAppointment> findOneWithEagerRelationships(Long id) {
-        return this.findOneWithToOneRelationships(id);
+        return this.fetchBagRelationships(this.findOneWithToOneRelationships(id));
     }
 
     default List<CarRepairAppointment> findAllWithEagerRelationships() {
-        return this.findAllWithToOneRelationships();
+        return this.fetchBagRelationships(this.findAllWithToOneRelationships());
     }
 
     default Page<CarRepairAppointment> findAllWithEagerRelationships(Pageable pageable) {
-        return this.findAllWithToOneRelationships(pageable);
+        return this.fetchBagRelationships(this.findAllWithToOneRelationships(pageable));
     }
 
     @Query(
