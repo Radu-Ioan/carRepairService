@@ -47,6 +47,11 @@ describe('CarServiceEmployee e2e test', () => {
       statusCode: 200,
       body: [carService],
     });
+
+    cy.intercept('GET', '/api/car-repair-appointments', {
+      statusCode: 200,
+      body: [],
+    });
   });
 
   afterEach(() => {

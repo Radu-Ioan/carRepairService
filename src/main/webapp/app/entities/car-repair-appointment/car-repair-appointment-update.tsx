@@ -12,6 +12,8 @@ import { ICar } from 'app/shared/model/car.model';
 import { getEntities as getCars } from 'app/entities/car/car.reducer';
 import { ICarService } from 'app/shared/model/car-service.model';
 import { getEntities as getCarServices } from 'app/entities/car-service/car-service.reducer';
+import { ICarServiceEmployee } from 'app/shared/model/car-service-employee.model';
+import { getEntities as getCarServiceEmployees } from 'app/entities/car-service-employee/car-service-employee.reducer';
 import { ICarRepairAppointment } from 'app/shared/model/car-repair-appointment.model';
 import { getEntity, updateEntity, createEntity, reset } from './car-repair-appointment.reducer';
 
@@ -25,6 +27,7 @@ export const CarRepairAppointmentUpdate = () => {
 
   const cars = useAppSelector(state => state.car.entities);
   const carServices = useAppSelector(state => state.carService.entities);
+  const carServiceEmployees = useAppSelector(state => state.carServiceEmployee.entities);
   const carRepairAppointmentEntity = useAppSelector(state => state.carRepairAppointment.entity);
   const loading = useAppSelector(state => state.carRepairAppointment.loading);
   const updating = useAppSelector(state => state.carRepairAppointment.updating);
@@ -43,6 +46,7 @@ export const CarRepairAppointmentUpdate = () => {
 
     dispatch(getCars({}));
     dispatch(getCarServices({}));
+    dispatch(getCarServiceEmployees({}));
   }, []);
 
   useEffect(() => {

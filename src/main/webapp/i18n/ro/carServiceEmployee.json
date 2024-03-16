@@ -21,7 +21,8 @@
       "name": "Name",
       "age": "Age",
       "yearsOfExperience": "Years Of Experience",
-      "carService": "Car Service"
+      "carService": "Car Service",
+      "repairAppointments": "Repair Appointments"
     }
   }
 }

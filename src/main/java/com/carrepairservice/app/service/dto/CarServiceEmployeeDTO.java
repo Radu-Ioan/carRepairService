@@ -2,7 +2,9 @@ package com.carrepairservice.app.service.dto;
 
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A DTO for the {@link com.carrepairservice.app.domain.CarServiceEmployee} entity.
@@ -23,6 +25,8 @@ public class CarServiceEmployeeDTO implements Serializable {
     private Integer yearsOfExperience;
 
     private CarServiceDTO carService;
+
+    private Set<CarRepairAppointmentDTO> repairAppointments = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -64,6 +68,14 @@ public class CarServiceEmployeeDTO implements Serializable {
         this.carService = carService;
     }
 
+    public Set<CarRepairAppointmentDTO> getRepairAppointments() {
+        return repairAppointments;
+    }
+
+    public void setRepairAppointments(Set<CarRepairAppointmentDTO> repairAppointments) {
+        this.repairAppointments = repairAppointments;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -94,6 +106,7 @@ public class CarServiceEmployeeDTO implements Serializable {
             ", age=" + getAge() +
             ", yearsOfExperience=" + getYearsOfExperience() +
             ", carService=" + getCarService() +
+            ", repairAppointments=" + getRepairAppointments() +
             "}";
     }
 }

@@ -20,7 +20,8 @@
       "id": "ID",
       "date": "Date",
       "car": "Car",
-      "carService": "Car Service"
+      "carService": "Car Service",
+      "responsibleEmployees": "Responsible Employees"
     }
   }
 }

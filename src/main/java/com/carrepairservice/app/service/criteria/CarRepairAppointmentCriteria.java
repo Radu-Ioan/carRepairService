@@ -29,6 +29,8 @@ public class CarRepairAppointmentCriteria implements Serializable, Criteria {
 
     private LongFilter carServiceId;
 
+    private LongFilter responsibleEmployeesId;
+
     private Boolean distinct;
 
     public CarRepairAppointmentCriteria() {}
@@ -38,6 +40,7 @@ public class CarRepairAppointmentCriteria implements Serializable, Criteria {
         this.date = other.date == null ? null : other.date.copy();
         this.carId = other.carId == null ? null : other.carId.copy();
         this.carServiceId = other.carServiceId == null ? null : other.carServiceId.copy();
+        this.responsibleEmployeesId = other.responsibleEmployeesId == null ? null : other.responsibleEmployeesId.copy();
         this.distinct = other.distinct;
     }
 
@@ -106,6 +109,21 @@ public class CarRepairAppointmentCriteria implements Serializable, Criteria {
         this.carServiceId = carServiceId;
     }
 
+    public LongFilter getResponsibleEmployeesId() {
+        return responsibleEmployeesId;
+    }
+
+    public LongFilter responsibleEmployeesId() {
+        if (responsibleEmployeesId == null) {
+            responsibleEmployeesId = new LongFilter();
+        }
+        return responsibleEmployeesId;
+    }
+
+    public void setResponsibleEmployeesId(LongFilter responsibleEmployeesId) {
+        this.responsibleEmployeesId = responsibleEmployeesId;
+    }
+
     public Boolean getDistinct() {
         return distinct;
     }
@@ -128,13 +146,14 @@ public class CarRepairAppointmentCriteria implements Serializable, Criteria {
             Objects.equals(date, that.date) &&
             Objects.equals(carId, that.carId) &&
             Objects.equals(carServiceId, that.carServiceId) &&
+            Objects.equals(responsibleEmployeesId, that.responsibleEmployeesId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, date, carId, carServiceId, distinct);
+        return Objects.hash(id, date, carId, carServiceId, responsibleEmployeesId, distinct);
     }
 
     // prettier-ignore
@@ -145,6 +164,7 @@ public class CarRepairAppointmentCriteria implements Serializable, Criteria {
             (date != null ? "date=" + date + ", " : "") +
             (carId != null ? "carId=" + carId + ", " : "") +
             (carServiceId != null ? "carServiceId=" + carServiceId + ", " : "") +
+            (responsibleEmployeesId != null ? "responsibleEmployeesId=" + responsibleEmployeesId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

@@ -35,12 +35,12 @@ public class CarService implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "carService")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "car", "carService" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "car", "carService", "responsibleEmployees" }, allowSetters = true)
     private Set<CarRepairAppointment> repairAppointments = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "carService")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "carService" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "carService", "repairAppointments" }, allowSetters = true)
     private Set<CarServiceEmployee> employees = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

@@ -10,6 +10,7 @@ import com.carrepairservice.app.IntegrationTest;
 import com.carrepairservice.app.domain.Car;
 import com.carrepairservice.app.domain.CarRepairAppointment;
 import com.carrepairservice.app.domain.CarService;
+import com.carrepairservice.app.domain.CarServiceEmployee;
 import com.carrepairservice.app.repository.CarRepairAppointmentRepository;
 import com.carrepairservice.app.service.CarRepairAppointmentService;
 import com.carrepairservice.app.service.dto.CarRepairAppointmentDTO;
@@ -397,6 +398,28 @@ class CarRepairAppointmentResourceIT {
 
         // Get all the carRepairAppointmentList where carService equals to (carServiceId + 1)
         defaultCarRepairAppointmentShouldNotBeFound("carServiceId.equals=" + (carServiceId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllCarRepairAppointmentsByResponsibleEmployeesIsEqualToSomething() throws Exception {
+        CarServiceEmployee responsibleEmployees;
+        if (TestUtil.findAll(em, CarServiceEmployee.class).isEmpty()) {
+            carRepairAppointmentRepository.saveAndFlush(carRepairAppointment);
+            responsibleEmployees = CarServiceEmployeeResourceIT.createEntity(em);
+        } else {
+            responsibleEmployees = TestUtil.findAll(em, CarServiceEmployee.class).get(0);
+        }
+        em.persist(responsibleEmployees);
+        em.flush();
+        carRepairAppointment.addResponsibleEmployees(responsibleEmployees);
+        carRepairAppointmentRepository.saveAndFlush(carRepairAppointment);
+        Long responsibleEmployeesId = responsibleEmployees.getId();
+        // Get all the carRepairAppointmentList where responsibleEmployees equals to responsibleEmployeesId
+        defaultCarRepairAppointmentShouldBeFound("responsibleEmployeesId.equals=" + responsibleEmployeesId);
+
+        // Get all the carRepairAppointmentList where responsibleEmployees equals to (responsibleEmployeesId + 1)
+        defaultCarRepairAppointmentShouldNotBeFound("responsibleEmployeesId.equals=" + (responsibleEmployeesId + 1));
     }
 
     /**

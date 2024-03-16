@@ -37,6 +37,14 @@
       "relationshipSide": "left",
       "relationshipType": "many-to-one",
       "relationshipValidateRules": ["required"]
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "carRepairAppointment",
+      "otherEntityRelationshipName": "responsibleEmployees",
+      "relationshipName": "repairAppointments",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
     }
   ],
   "searchEngine": "no",

@@ -53,6 +53,21 @@ export const CarServiceEmployeeDetail = () => {
             <Translate contentKey="carRepairServiceApp.carServiceEmployee.carService">Car Service</Translate>
           </dt>
           <dd>{carServiceEmployeeEntity.carService ? carServiceEmployeeEntity.carService.address : ''}</dd>
+          <dt>
+            <Translate contentKey="carRepairServiceApp.carServiceEmployee.repairAppointments">Repair Appointments</Translate>
+          </dt>
+          <dd>
+            {carServiceEmployeeEntity.repairAppointments
+              ? carServiceEmployeeEntity.repairAppointments.map((val, i) => (
+                  <span key={val.id}>
+                    <a>{val.id}</a>
+                    {carServiceEmployeeEntity.repairAppointments && i === carServiceEmployeeEntity.repairAppointments.length - 1
+                      ? ''
+                      : ', '}
+                  </span>
+                ))
+              : null}
+          </dd>
         </dl>
         <Button tag={Link} to="/car-service-employee" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}

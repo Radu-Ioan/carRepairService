@@ -112,6 +112,15 @@ public class CarServiceEmployeeQueryService extends QueryService<CarServiceEmplo
                         )
                     );
             }
+            if (criteria.getRepairAppointmentsId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getRepairAppointmentsId(),
+                            root -> root.join(CarServiceEmployee_.repairAppointments, JoinType.LEFT).get(CarRepairAppointment_.id)
+                        )
+                    );
+            }
         }
         return specification;
     }

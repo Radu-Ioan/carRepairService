@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -39,6 +41,11 @@ public class CarRepairAppointment implements Serializable {
     @NotNull
     @JsonIgnoreProperties(value = { "repairAppointments", "employees" }, allowSetters = true)
     private CarService carService;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "repairAppointments")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "carService", "repairAppointments" }, allowSetters = true)
+    private Set<CarServiceEmployee> responsibleEmployees = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -91,6 +98,37 @@ public class CarRepairAppointment implements Serializable {
 
     public CarRepairAppointment carService(CarService carService) {
         this.setCarService(carService);
+        return this;
+    }
+
+    public Set<CarServiceEmployee> getResponsibleEmployees() {
+        return this.responsibleEmployees;
+    }
+
+    public void setResponsibleEmployees(Set<CarServiceEmployee> carServiceEmployees) {
+        if (this.responsibleEmployees != null) {
+            this.responsibleEmployees.forEach(i -> i.removeRepairAppointments(this));
+        }
+        if (carServiceEmployees != null) {
+            carServiceEmployees.forEach(i -> i.addRepairAppointments(this));
+        }
+        this.responsibleEmployees = carServiceEmployees;
+    }
+
+    public CarRepairAppointment responsibleEmployees(Set<CarServiceEmployee> carServiceEmployees) {
+        this.setResponsibleEmployees(carServiceEmployees);
+        return this;
+    }
+
+    public CarRepairAppointment addResponsibleEmployees(CarServiceEmployee carServiceEmployee) {
+        this.responsibleEmployees.add(carServiceEmployee);
+        carServiceEmployee.getRepairAppointments().add(this);
+        return this;
+    }
+
+    public CarRepairAppointment removeResponsibleEmployees(CarServiceEmployee carServiceEmployee) {
+        this.responsibleEmployees.remove(carServiceEmployee);
+        carServiceEmployee.getRepairAppointments().remove(this);
         return this;
     }
 

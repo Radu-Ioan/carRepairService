@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -41,6 +43,16 @@ public class CarServiceEmployee implements Serializable {
     @NotNull
     @JsonIgnoreProperties(value = { "repairAppointments", "employees" }, allowSetters = true)
     private CarService carService;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "rel_car_service_employee__repair_appointments",
+        joinColumns = @JoinColumn(name = "car_service_employee_id"),
+        inverseJoinColumns = @JoinColumn(name = "repair_appointments_id")
+    )
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "car", "carService", "responsibleEmployees" }, allowSetters = true)
+    private Set<CarRepairAppointment> repairAppointments = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -106,6 +118,29 @@ public class CarServiceEmployee implements Serializable {
 
     public CarServiceEmployee carService(CarService carService) {
         this.setCarService(carService);
+        return this;
+    }
+
+    public Set<CarRepairAppointment> getRepairAppointments() {
+        return this.repairAppointments;
+    }
+
+    public void setRepairAppointments(Set<CarRepairAppointment> carRepairAppointments) {
+        this.repairAppointments = carRepairAppointments;
+    }
+
+    public CarServiceEmployee repairAppointments(Set<CarRepairAppointment> carRepairAppointments) {
+        this.setRepairAppointments(carRepairAppointments);
+        return this;
+    }
+
+    public CarServiceEmployee addRepairAppointments(CarRepairAppointment carRepairAppointment) {
+        this.repairAppointments.add(carRepairAppointment);
+        return this;
+    }
+
+    public CarServiceEmployee removeRepairAppointments(CarRepairAppointment carRepairAppointment) {
+        this.repairAppointments.remove(carRepairAppointment);
         return this;
     }
 

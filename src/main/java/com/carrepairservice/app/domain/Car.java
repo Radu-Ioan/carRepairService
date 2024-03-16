@@ -35,7 +35,7 @@ public class Car implements Serializable {
     @Column(name = "owner_name", nullable = false)
     private String ownerName;
 
-    @JsonIgnoreProperties(value = { "car", "carService" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "car", "carService", "responsibleEmployees" }, allowSetters = true)
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(unique = true)
     private CarRepairAppointment carRepairAppointment;

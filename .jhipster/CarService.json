@@ -27,6 +27,14 @@
       "relationshipName": "repairAppointments",
       "relationshipSide": "left",
       "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "carServiceEmployee",
+      "otherEntityRelationshipName": "carService",
+      "relationshipName": "employees",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
     }
   ],
   "searchEngine": "no",
