@@ -2,6 +2,7 @@ package com.carrepairservice.app.service.impl;
 
 import com.carrepairservice.app.domain.CarRepairAppointment;
 import com.carrepairservice.app.repository.CarRepairAppointmentRepository;
+import com.carrepairservice.app.repository.CarRepository;
 import com.carrepairservice.app.service.CarRepairAppointmentService;
 import com.carrepairservice.app.service.dto.CarRepairAppointmentDTO;
 import com.carrepairservice.app.service.mapper.CarRepairAppointmentMapper;
@@ -26,12 +27,16 @@ public class CarRepairAppointmentServiceImpl implements CarRepairAppointmentServ
 
     private final CarRepairAppointmentMapper carRepairAppointmentMapper;
 
+    private final CarRepository carRepository;
+
     public CarRepairAppointmentServiceImpl(
         CarRepairAppointmentRepository carRepairAppointmentRepository,
-        CarRepairAppointmentMapper carRepairAppointmentMapper
+        CarRepairAppointmentMapper carRepairAppointmentMapper,
+        CarRepository carRepository
     ) {
         this.carRepairAppointmentRepository = carRepairAppointmentRepository;
         this.carRepairAppointmentMapper = carRepairAppointmentMapper;
+        this.carRepository = carRepository;
     }
 
     @Override
@@ -39,6 +44,11 @@ public class CarRepairAppointmentServiceImpl implements CarRepairAppointmentServ
         log.debug("Request to save CarRepairAppointment : {}", carRepairAppointmentDTO);
         CarRepairAppointment carRepairAppointment = carRepairAppointmentMapper.toEntity(carRepairAppointmentDTO);
         carRepairAppointment = carRepairAppointmentRepository.save(carRepairAppointment);
+
+        var car = carRepairAppointment.getCar();
+        car.setCarRepairAppointment(carRepairAppointment);
+        carRepository.save(car);
+
         return carRepairAppointmentMapper.toDto(carRepairAppointment);
     }
 
@@ -47,6 +57,11 @@ public class CarRepairAppointmentServiceImpl implements CarRepairAppointmentServ
         log.debug("Request to update CarRepairAppointment : {}", carRepairAppointmentDTO);
         CarRepairAppointment carRepairAppointment = carRepairAppointmentMapper.toEntity(carRepairAppointmentDTO);
         carRepairAppointment = carRepairAppointmentRepository.save(carRepairAppointment);
+
+        var car = carRepairAppointment.getCar();
+        car.setCarRepairAppointment(carRepairAppointment);
+        carRepository.save(car);
+
         return carRepairAppointmentMapper.toDto(carRepairAppointment);
     }
 
