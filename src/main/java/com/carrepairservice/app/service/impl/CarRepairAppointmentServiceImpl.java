@@ -1,8 +1,11 @@
 package com.carrepairservice.app.service.impl;
 
 import com.carrepairservice.app.domain.CarRepairAppointment;
+import com.carrepairservice.app.domain.CarServiceEmployee;
 import com.carrepairservice.app.repository.CarRepairAppointmentRepository;
 import com.carrepairservice.app.repository.CarRepository;
+import com.carrepairservice.app.repository.CarServiceEmployeeRepository;
+import com.carrepairservice.app.repository.CarServiceRepository;
 import com.carrepairservice.app.service.CarRepairAppointmentService;
 import com.carrepairservice.app.service.dto.CarRepairAppointmentDTO;
 import com.carrepairservice.app.service.mapper.CarRepairAppointmentMapper;
@@ -29,14 +32,22 @@ public class CarRepairAppointmentServiceImpl implements CarRepairAppointmentServ
 
     private final CarRepository carRepository;
 
+    private final CarServiceEmployeeRepository carServiceEmployeeRepository;
+
+    private final CarServiceRepository carServiceRepository;
+
     public CarRepairAppointmentServiceImpl(
         CarRepairAppointmentRepository carRepairAppointmentRepository,
         CarRepairAppointmentMapper carRepairAppointmentMapper,
-        CarRepository carRepository
+        CarRepository carRepository,
+        CarServiceEmployeeRepository carServiceEmployeeRepository,
+        CarServiceRepository carServiceRepository
     ) {
         this.carRepairAppointmentRepository = carRepairAppointmentRepository;
         this.carRepairAppointmentMapper = carRepairAppointmentMapper;
         this.carRepository = carRepository;
+        this.carServiceEmployeeRepository = carServiceEmployeeRepository;
+        this.carServiceRepository = carServiceRepository;
     }
 
     @Override
@@ -48,6 +59,29 @@ public class CarRepairAppointmentServiceImpl implements CarRepairAppointmentServ
         var car = carRepairAppointment.getCar();
         car.setCarRepairAppointment(carRepairAppointment);
         carRepository.save(car);
+
+        var employees = carRepairAppointment.getResponsibleEmployees();
+        for (var e : employees) {
+            e.getRepairAppointments().add(carRepairAppointment);
+            carServiceEmployeeRepository.save(e);
+        }
+        for (var e : carServiceEmployeeRepository.findAll()) {
+            if (!employees.contains(e)) {
+                e.removeRepairAppointments(carRepairAppointment);
+                carServiceEmployeeRepository.save(e);
+            }
+        }
+
+        var service = carRepairAppointment.getCarService();
+        service.getRepairAppointments().add(carRepairAppointment);
+        carServiceRepository.save(service);
+
+        for (var s : carServiceRepository.findAll()) {
+            if (!s.getAddress().equals(service.getAddress())) {
+                s.removeRepairAppointments(carRepairAppointment);
+                carServiceRepository.save(s);
+            }
+        }
 
         return carRepairAppointmentMapper.toDto(carRepairAppointment);
     }
@@ -61,6 +95,29 @@ public class CarRepairAppointmentServiceImpl implements CarRepairAppointmentServ
         var car = carRepairAppointment.getCar();
         car.setCarRepairAppointment(carRepairAppointment);
         carRepository.save(car);
+
+        var employees = carRepairAppointment.getResponsibleEmployees();
+        for (var e : employees) {
+            e.getRepairAppointments().add(carRepairAppointment);
+            carServiceEmployeeRepository.save(e);
+        }
+        for (var e : carServiceEmployeeRepository.findAll()) {
+            if (!employees.contains(e)) {
+                e.removeRepairAppointments(carRepairAppointment);
+                carServiceEmployeeRepository.save(e);
+            }
+        }
+
+        var service = carRepairAppointment.getCarService();
+        service.getRepairAppointments().add(carRepairAppointment);
+        carServiceRepository.save(service);
+
+        for (var s : carServiceRepository.findAll()) {
+            if (!s.getAddress().equals(service.getAddress())) {
+                s.removeRepairAppointments(carRepairAppointment);
+                carServiceRepository.save(s);
+            }
+        }
 
         return carRepairAppointmentMapper.toDto(carRepairAppointment);
     }

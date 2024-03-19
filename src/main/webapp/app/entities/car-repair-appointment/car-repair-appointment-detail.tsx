@@ -57,7 +57,9 @@ export const CarRepairAppointmentDetail = () => {
             {carRepairAppointmentEntity.responsibleEmployees
               ? carRepairAppointmentEntity.responsibleEmployees.map((val, i) => (
                   <span key={val.id}>
-                    <a>{val.name}</a>
+                    <Link to={'/car-service-employee/' + val.id} className="no-underline">
+                      {val.name}
+                    </Link>
                     {carRepairAppointmentEntity.responsibleEmployees && i === carRepairAppointmentEntity.responsibleEmployees.length - 1
                       ? ''
                       : ', '}
@@ -67,10 +69,7 @@ export const CarRepairAppointmentDetail = () => {
           </dd>
         </dl>
         <Button tag={Link} to="/car-repair-appointment" replace color="info" data-cy="entityDetailsBackButton">
-          <FontAwesomeIcon icon="arrow-left" />{' '}
-          <span className="d-none d-md-inline">
-            <Translate contentKey="entity.action.back">Back</Translate>
-          </span>
+          <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">All appointments</span>
         </Button>
         &nbsp;
         <Button tag={Link} to={`/car-repair-appointment/${carRepairAppointmentEntity.id}/edit`} replace color="primary">

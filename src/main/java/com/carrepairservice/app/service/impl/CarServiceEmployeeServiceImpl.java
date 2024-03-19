@@ -1,7 +1,9 @@
 package com.carrepairservice.app.service.impl;
 
 import com.carrepairservice.app.domain.CarServiceEmployee;
+import com.carrepairservice.app.repository.CarRepairAppointmentRepository;
 import com.carrepairservice.app.repository.CarServiceEmployeeRepository;
+import com.carrepairservice.app.repository.CarServiceRepository;
 import com.carrepairservice.app.service.CarServiceEmployeeService;
 import com.carrepairservice.app.service.dto.CarServiceEmployeeDTO;
 import com.carrepairservice.app.service.mapper.CarServiceEmployeeMapper;
@@ -26,12 +28,20 @@ public class CarServiceEmployeeServiceImpl implements CarServiceEmployeeService 
 
     private final CarServiceEmployeeMapper carServiceEmployeeMapper;
 
+    private final CarRepairAppointmentRepository carRepairAppointmentRepository;
+
+    private final CarServiceRepository carServiceRepository;
+
     public CarServiceEmployeeServiceImpl(
         CarServiceEmployeeRepository carServiceEmployeeRepository,
-        CarServiceEmployeeMapper carServiceEmployeeMapper
+        CarServiceEmployeeMapper carServiceEmployeeMapper,
+        CarRepairAppointmentRepository carRepairAppointmentRepository,
+        CarServiceRepository carServiceRepository
     ) {
         this.carServiceEmployeeRepository = carServiceEmployeeRepository;
         this.carServiceEmployeeMapper = carServiceEmployeeMapper;
+        this.carRepairAppointmentRepository = carRepairAppointmentRepository;
+        this.carServiceRepository = carServiceRepository;
     }
 
     @Override
@@ -39,6 +49,38 @@ public class CarServiceEmployeeServiceImpl implements CarServiceEmployeeService 
         log.debug("Request to save CarServiceEmployee : {}", carServiceEmployeeDTO);
         CarServiceEmployee carServiceEmployee = carServiceEmployeeMapper.toEntity(carServiceEmployeeDTO);
         carServiceEmployee = carServiceEmployeeRepository.save(carServiceEmployee);
+
+        var appointments = carServiceEmployee.getRepairAppointments();
+
+        // update Appointments table
+        for (var a : appointments) {
+            a.getResponsibleEmployees().add(carServiceEmployee);
+            // add the new ones
+            carRepairAppointmentRepository.save(a);
+        }
+        for (var a : carRepairAppointmentRepository.findAll()) {
+            // delete old
+            if (!appointments.contains(a)) {
+                a.getResponsibleEmployees().remove(carServiceEmployee);
+            }
+        }
+
+        var service = carServiceEmployee.getCarService();
+        // update the new one
+        service.getEmployees().add(carServiceEmployee);
+        carServiceRepository.save(service);
+
+        CarServiceEmployee finalCarServiceEmployee = carServiceEmployee;
+        // update the old
+        carServiceRepository
+            .findAll()
+            .forEach(s -> {
+                if (!s.getAddress().equals(service.getName())) {
+                    s.getEmployees().remove(finalCarServiceEmployee);
+                    carServiceRepository.save(s);
+                }
+            });
+
         return carServiceEmployeeMapper.toDto(carServiceEmployee);
     }
 
@@ -47,6 +89,36 @@ public class CarServiceEmployeeServiceImpl implements CarServiceEmployeeService 
         log.debug("Request to update CarServiceEmployee : {}", carServiceEmployeeDTO);
         CarServiceEmployee carServiceEmployee = carServiceEmployeeMapper.toEntity(carServiceEmployeeDTO);
         carServiceEmployee = carServiceEmployeeRepository.save(carServiceEmployee);
+
+        var appointments = carServiceEmployee.getRepairAppointments();
+
+        for (var a : appointments) {
+            a.getResponsibleEmployees().add(carServiceEmployee);
+            carRepairAppointmentRepository.save(a);
+        }
+        for (var a : carRepairAppointmentRepository.findAll()) {
+            // delete old
+            if (!appointments.contains(a)) {
+                a.getResponsibleEmployees().remove(carServiceEmployee);
+            }
+        }
+
+        var service = carServiceEmployee.getCarService();
+        // update the new one
+        service.getEmployees().add(carServiceEmployee);
+        carServiceRepository.save(service);
+
+        CarServiceEmployee finalCarServiceEmployee = carServiceEmployee;
+        // update the old
+        carServiceRepository
+            .findAll()
+            .forEach(s -> {
+                if (!s.getAddress().equals(service.getName())) {
+                    s.getEmployees().remove(finalCarServiceEmployee);
+                    carServiceRepository.save(s);
+                }
+            });
+
         return carServiceEmployeeMapper.toDto(carServiceEmployee);
     }
 

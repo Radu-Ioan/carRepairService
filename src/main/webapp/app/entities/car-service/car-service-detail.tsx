@@ -49,7 +49,14 @@ export const CarServiceDetail = () => {
           <dd>
             {carServiceEntity.repairAppointments &&
               carServiceEntity.repairAppointments.map((app, idx) => {
-                return <Link to={`/car-repair-appointment/${app.id}`}>{app.id}</Link>;
+                return (
+                  <span key={app.id}>
+                    <Link to={'/car-repair-appointment/' + app.id} className="no-underline">
+                      {app.id}
+                    </Link>
+                    {carServiceEntity.repairAppointments && idx === carServiceEntity.repairAppointments.length - 1 ? '' : ', '}
+                  </span>
+                );
               })}
           </dd>
           <dt>
@@ -58,7 +65,14 @@ export const CarServiceDetail = () => {
           <dd>
             {carServiceEntity.employees &&
               carServiceEntity.employees.map((emp, idx) => {
-                return <Link to={`/car-service-employee/${emp.id}`}>{emp.name}</Link>;
+                return (
+                  <span key={emp.id}>
+                    <Link to={'/car-service-employee/' + emp.id} className="no-underline">
+                      {emp.name}
+                    </Link>
+                    {carServiceEntity.employees && idx === carServiceEntity.employees.length - 1 ? '' : ', '}
+                  </span>
+                );
               })}
           </dd>
         </dl>
