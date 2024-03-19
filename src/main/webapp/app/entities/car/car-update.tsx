@@ -59,7 +59,9 @@ export const CarUpdate = () => {
     const entity = {
       ...carEntity,
       ...values,
-      carRepairAppointment: carRepairAppointments.find(it => it.id.toString() === values.carRepairAppointment.toString()),
+      carRepairAppointment: carRepairAppointments.find(
+        it => it.id.toString() === (values.carRepairAppointment ? values.carRepairAppointment.toString() : ''),
+      ),
     };
 
     if (isNew) {

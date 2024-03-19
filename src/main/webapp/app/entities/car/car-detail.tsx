@@ -55,10 +55,7 @@ export const CarDetail = () => {
           <dd>{carEntity.carRepairAppointment ? carEntity.carRepairAppointment.date : ''}</dd>
         </dl>
         <Button tag={Link} to="/car" replace color="info" data-cy="entityDetailsBackButton">
-          <FontAwesomeIcon icon="arrow-left" />{' '}
-          <span className="d-none d-md-inline">
-            <Translate contentKey="entity.action.back">Back</Translate>
-          </span>
+          <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">All cars</span>
         </Button>
         &nbsp;
         <Button tag={Link} to={`/car/${carEntity.id}/edit`} replace color="primary">
