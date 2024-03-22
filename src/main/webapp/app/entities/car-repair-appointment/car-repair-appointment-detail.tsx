@@ -8,8 +8,11 @@ import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { getEntity } from './car-repair-appointment.reducer';
+import { hasAnyAuthority } from 'app/shared/auth/private-route';
+import { AUTHORITIES } from 'app/config/constants';
 
 export const CarRepairAppointmentDetail = () => {
+  const isAdmin = useAppSelector(state => hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.ADMIN]));
   const dispatch = useAppDispatch();
 
   const { id } = useParams<'id'>();
@@ -72,12 +75,14 @@ export const CarRepairAppointmentDetail = () => {
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">All appointments</span>
         </Button>
         &nbsp;
-        <Button tag={Link} to={`/car-repair-appointment/${carRepairAppointmentEntity.id}/edit`} replace color="primary">
-          <FontAwesomeIcon icon="pencil-alt" />{' '}
-          <span className="d-none d-md-inline">
-            <Translate contentKey="entity.action.edit">Edit</Translate>
-          </span>
-        </Button>
+        {isAdmin && (
+          <Button tag={Link} to={`/car-repair-appointment/${carRepairAppointmentEntity.id}/edit`} replace color="primary">
+            <FontAwesomeIcon icon="pencil-alt" />{' '}
+            <span className="d-none d-md-inline">
+              <Translate contentKey="entity.action.edit">Edit</Translate>
+            </span>
+          </Button>
+        )}
       </Col>
     </Row>
   );
