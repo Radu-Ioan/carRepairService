@@ -21,3 +21,35 @@ export const Home = () => (
     </NavLink>
   </NavItem>
 );
+
+export const Employee = () => (
+  <NavItem>
+    <NavLink tag={Link} to="/car-service-employee" className="d-flex align-items center">
+      <span>Services workers</span>
+    </NavLink>
+  </NavItem>
+);
+
+export const Services = () => (
+  <NavItem>
+    <NavLink tag={Link} to="/car-service" className="d-flex align-items center">
+      <span>Services</span>
+    </NavLink>
+  </NavItem>
+);
+
+export const Car = () => (
+  <NavItem>
+    <NavLink tag={Link} to="/car" className="d-flex align-items center">
+      <span>Cars</span>
+    </NavLink>
+  </NavItem>
+);
+
+export const Appointment = () => (
+  <NavItem>
+    <NavLink tag={Link} to="/car-repair-appointment" className="d-flex align-items center">
+      <span>Appointments</span>
+    </NavLink>
+  </NavItem>
+);

@@ -2,8 +2,7 @@ import './home.scss';
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Translate } from 'react-jhipster';
-import { Row, Col, Alert } from 'reactstrap';
+import { Row, Col, Alert, Button } from 'reactstrap';
 
 import { useAppSelector } from 'app/config/store';
 
@@ -15,20 +14,23 @@ export const Home = () => {
       <Col md="9">
         {account?.login ? (
           <div>
-            <Alert color="success">
-              <Translate contentKey="home.logged.message" interpolate={{ username: account.login }}>
-                You are logged in as user {account.login}.
-              </Translate>
-            </Alert>
+            <Alert color="success">Welcome, {account.login}.</Alert>
+            <div className="container">
+              If you want to make an appointment for your car, first register your car, then create an appointment.
+            </div>
           </div>
         ) : (
-          <div className="container d-flex gap-1 justify-content-center">
-            <Link to="/login" className="no-underline">
-              Sign in
-            </Link>
-            <Link to="/account/register" className="no-underline">
-              Register
-            </Link>
+          <div className="container d-flex gap-2 justify-content-center">
+            <Button color="primary" size="lg" block>
+              <Link to="/login" className="no-underline">
+                Sign in
+              </Link>
+            </Button>
+            <Button color="primary" size="lg" block>
+              <Link to="/account/register" className="no-underline">
+                Register
+              </Link>
+            </Button>
           </div>
         )}
       </Col>
