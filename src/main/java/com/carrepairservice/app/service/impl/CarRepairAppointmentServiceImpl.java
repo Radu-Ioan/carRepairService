@@ -1,6 +1,7 @@
 package com.carrepairservice.app.service.impl;
 
 import com.carrepairservice.app.domain.CarRepairAppointment;
+import com.carrepairservice.app.domain.CarService;
 import com.carrepairservice.app.domain.CarServiceEmployee;
 import com.carrepairservice.app.repository.CarRepairAppointmentRepository;
 import com.carrepairservice.app.repository.CarRepository;
@@ -73,15 +74,16 @@ public class CarRepairAppointmentServiceImpl implements CarRepairAppointmentServ
         }
 
         var service = carRepairAppointment.getCarService();
-        service.getRepairAppointments().add(carRepairAppointment);
-        carServiceRepository.save(service);
 
-        for (var s : carServiceRepository.findAll()) {
+        for (CarService s : carServiceRepository.findAll()) {
             if (!s.getAddress().equals(service.getAddress())) {
                 s.removeRepairAppointments(carRepairAppointment);
                 carServiceRepository.save(s);
             }
         }
+
+        service.addRepairAppointments(carRepairAppointment);
+        carServiceRepository.save(service);
 
         return carRepairAppointmentMapper.toDto(carRepairAppointment);
     }
@@ -109,15 +111,16 @@ public class CarRepairAppointmentServiceImpl implements CarRepairAppointmentServ
         }
 
         var service = carRepairAppointment.getCarService();
-        service.getRepairAppointments().add(carRepairAppointment);
-        carServiceRepository.save(service);
 
-        for (var s : carServiceRepository.findAll()) {
+        for (CarService s : carServiceRepository.findAll()) {
             if (!s.getAddress().equals(service.getAddress())) {
                 s.removeRepairAppointments(carRepairAppointment);
                 carServiceRepository.save(s);
             }
         }
+
+        service.addRepairAppointments(carRepairAppointment);
+        carServiceRepository.save(service);
 
         return carRepairAppointmentMapper.toDto(carRepairAppointment);
     }

@@ -24,8 +24,13 @@ export const CarServiceEmployeeUpdate = () => {
   const isNew = id === undefined;
 
   const carServices = useAppSelector(state => state.carService.entities);
-  const carRepairAppointments = useAppSelector(state => state.carRepairAppointment.entities);
+  let carRepairAppointments = useAppSelector(state => state.carRepairAppointment.entities);
+
   const carServiceEmployeeEntity = useAppSelector(state => state.carServiceEmployee.entity);
+  carRepairAppointments = carRepairAppointments.filter(
+    (app: ICarRepairAppointment) => app.carService?.address == carServiceEmployeeEntity.carService?.address,
+  );
+
   const loading = useAppSelector(state => state.carServiceEmployee.loading);
   const updating = useAppSelector(state => state.carServiceEmployee.updating);
   const updateSuccess = useAppSelector(state => state.carServiceEmployee.updateSuccess);
@@ -176,11 +181,13 @@ export const CarServiceEmployeeUpdate = () => {
               >
                 <option value="" key="0" />
                 {carRepairAppointments
-                  ? carRepairAppointments.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.id}
-                      </option>
-                    ))
+                  ? carRepairAppointments.map(appointment => {
+                      return (
+                        <option value={appointment.id} key={appointment.id}>
+                          {appointment.id}
+                        </option>
+                      );
+                    })
                   : null}
               </ValidatedField>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/car-service-employee" replace color="info">
