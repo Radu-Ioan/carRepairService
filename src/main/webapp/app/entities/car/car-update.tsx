@@ -118,7 +118,8 @@ export const CarUpdate = () => {
                 data-cy="manufacturedYear"
                 type="text"
                 validate={{
-                  min: { value: 1970, message: translate('entity.validation.min', { min: 1970 }) },
+                  min: { value: 1990, message: translate('entity.validation.min', { min: 1990 }) },
+                  max: { value: 2024, message: translate('entity.validation.max', { max: 2024 }) },
                   validate: v => isNumber(v) || translate('entity.validation.number'),
                 }}
               />

@@ -22,12 +22,12 @@ export const Home = () => {
         ) : (
           <div className="container d-flex gap-2 justify-content-center">
             <Button color="primary" size="lg" block>
-              <Link to="/login" className="no-underline">
+              <Link to="/login" className="no-underline text-white">
                 Sign in
               </Link>
             </Button>
             <Button color="primary" size="lg" block>
-              <Link to="/account/register" className="no-underline">
+              <Link to="/account/register" className="no-underline text-white">
                 Register
               </Link>
             </Button>
