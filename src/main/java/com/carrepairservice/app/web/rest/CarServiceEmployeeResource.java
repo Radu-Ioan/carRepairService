@@ -1,6 +1,7 @@
 package com.carrepairservice.app.web.rest;
 
 import com.carrepairservice.app.repository.CarServiceEmployeeRepository;
+import com.carrepairservice.app.security.AuthoritiesConstants;
 import com.carrepairservice.app.service.CarServiceEmployeeQueryService;
 import com.carrepairservice.app.service.CarServiceEmployeeService;
 import com.carrepairservice.app.service.criteria.CarServiceEmployeeCriteria;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -64,6 +66,7 @@ public class CarServiceEmployeeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<CarServiceEmployeeDTO> createCarServiceEmployee(@Valid @RequestBody CarServiceEmployeeDTO carServiceEmployeeDTO)
         throws URISyntaxException {
         log.debug("REST request to save CarServiceEmployee : {}", carServiceEmployeeDTO);
@@ -88,6 +91,7 @@ public class CarServiceEmployeeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<CarServiceEmployeeDTO> updateCarServiceEmployee(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody CarServiceEmployeeDTO carServiceEmployeeDTO
@@ -123,6 +127,7 @@ public class CarServiceEmployeeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<CarServiceEmployeeDTO> partialUpdateCarServiceEmployee(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody CarServiceEmployeeDTO carServiceEmployeeDTO
@@ -198,6 +203,7 @@ public class CarServiceEmployeeResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Void> deleteCarServiceEmployee(@PathVariable("id") Long id) {
         log.debug("REST request to delete CarServiceEmployee : {}", id);
         carServiceEmployeeService.delete(id);
