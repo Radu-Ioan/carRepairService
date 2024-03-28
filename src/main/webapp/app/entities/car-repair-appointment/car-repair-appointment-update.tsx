@@ -120,7 +120,11 @@ export const CarRepairAppointmentUpdate = () => {
                 data-cy="date"
                 type="date"
                 validate={{
-                  required: { value: true, message: translate('entity.validation.required') },
+                  min: { value: new Date().toISOString().split('T')[0], message: 'Date must be today or in the future' },
+                  required: {
+                    value: true,
+                    message: translate('entity.validation.required'),
+                  },
                 }}
               />
               <ValidatedField
