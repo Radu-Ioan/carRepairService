@@ -2,6 +2,7 @@ package com.carrepairservice.app.service.impl;
 
 import com.carrepairservice.app.domain.Car;
 import com.carrepairservice.app.repository.CarRepository;
+import com.carrepairservice.app.service.CarRepairAppointmentService;
 import com.carrepairservice.app.service.CarService;
 import com.carrepairservice.app.service.dto.CarDTO;
 import com.carrepairservice.app.service.mapper.CarMapper;
@@ -26,9 +27,12 @@ public class CarServiceImpl implements CarService {
 
     private final CarMapper carMapper;
 
-    public CarServiceImpl(CarRepository carRepository, CarMapper carMapper) {
+    private final CarRepairAppointmentService carRepairAppointmentService;
+
+    public CarServiceImpl(CarRepository carRepository, CarMapper carMapper, CarRepairAppointmentService carRepairAppointmentService) {
         this.carRepository = carRepository;
         this.carMapper = carMapper;
+        this.carRepairAppointmentService = carRepairAppointmentService;
     }
 
     @Override
@@ -83,6 +87,15 @@ public class CarServiceImpl implements CarService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Car : {}", id);
+        var carOptional = carRepository.findById(id);
+
+        if (carOptional.isPresent()) {
+            var car = carOptional.get();
+            var carApp = car.getCarRepairAppointment();
+
+            carRepairAppointmentService.delete(carApp.getId());
+        }
+
         carRepository.deleteById(id);
     }
 }

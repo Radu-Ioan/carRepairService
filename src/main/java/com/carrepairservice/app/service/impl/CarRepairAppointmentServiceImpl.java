@@ -161,6 +161,25 @@ public class CarRepairAppointmentServiceImpl implements CarRepairAppointmentServ
     @Override
     public void delete(Long id) {
         log.debug("Request to delete CarRepairAppointment : {}", id);
+        var app = carRepairAppointmentRepository.findById(id);
+
+        if (app.isPresent()) {
+            var appointment = app.get();
+
+            var car = appointment.getCar();
+            car.setCarRepairAppointment(null);
+            carRepository.save(car);
+
+            var carService = appointment.getCarService();
+            carService.removeRepairAppointments(appointment);
+            carServiceRepository.save(carService);
+
+            for (var e : appointment.getResponsibleEmployees()) {
+                e.removeRepairAppointments(appointment);
+                carServiceEmployeeRepository.save(e);
+            }
+        }
+
         carRepairAppointmentRepository.deleteById(id);
     }
 }
