@@ -12,6 +12,7 @@ import { AUTHORITIES } from 'app/config/constants';
 
 export const CarDetail = () => {
   const isAdmin = useAppSelector(state => hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.ADMIN]));
+  const account = useAppSelector(state => state.authentication.account);
   const dispatch = useAppDispatch();
 
   const { id } = useParams<'id'>();
@@ -21,6 +22,8 @@ export const CarDetail = () => {
   }, []);
 
   const carEntity = useAppSelector(state => state.car.entity);
+  const isOwner = `${account.lastName} ${account.firstName}` == carEntity.ownerName.trim();
+
   return (
     <Row>
       <Col md="8">
@@ -61,7 +64,7 @@ export const CarDetail = () => {
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">All cars</span>
         </Button>
         &nbsp;
-        {isAdmin && (
+        {isOwner && (
           <Button tag={Link} to={`/car/${carEntity.id}/edit`} replace color="primary">
             <FontAwesomeIcon icon="pencil-alt" />{' '}
             <span className="d-none d-md-inline">
