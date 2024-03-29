@@ -25,7 +25,7 @@ export const CarRepairAppointmentDetail = () => {
   const carRepairAppointmentEntity = useAppSelector(state => state.carRepairAppointment.entity);
 
   console.log('carRepairAppointmentEntity.car:', carRepairAppointmentEntity.car);
-  const isOwner = `${account.lastName} ${account.firstName}` == carRepairAppointmentEntity.car?.ownerName.trim();
+  const isOwner = `${account.lastName} ${account.firstName}` == carRepairAppointmentEntity.car?.ownerName?.trim();
 
   return (
     <Row>
@@ -80,7 +80,7 @@ export const CarRepairAppointmentDetail = () => {
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">All appointments</span>
         </Button>
         &nbsp;
-        {isOwner && (
+        {(isAdmin || isOwner) && (
           <Button tag={Link} to={`/car-repair-appointment/${carRepairAppointmentEntity.id}/edit`} replace color="primary">
             <FontAwesomeIcon icon="pencil-alt" />{' '}
             <span className="d-none d-md-inline">

@@ -93,7 +93,9 @@ public class CarServiceImpl implements CarService {
             var car = carOptional.get();
             var carApp = car.getCarRepairAppointment();
 
-            carRepairAppointmentService.delete(carApp.getId());
+            if (carApp != null) {
+                carRepairAppointmentService.delete(carApp.getId());
+            }
         }
 
         carRepository.deleteById(id);

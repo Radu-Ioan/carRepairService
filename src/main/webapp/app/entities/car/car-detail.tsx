@@ -22,7 +22,7 @@ export const CarDetail = () => {
   }, []);
 
   const carEntity = useAppSelector(state => state.car.entity);
-  const isOwner = `${account.lastName} ${account.firstName}` == carEntity.ownerName.trim();
+  const isOwner = `${account.lastName} ${account.firstName}` == carEntity.ownerName?.trim();
 
   return (
     <Row>
@@ -64,7 +64,7 @@ export const CarDetail = () => {
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">All cars</span>
         </Button>
         &nbsp;
-        {isOwner && (
+        {(isAdmin || isOwner) && (
           <Button tag={Link} to={`/car/${carEntity.id}/edit`} replace color="primary">
             <FontAwesomeIcon icon="pencil-alt" />{' '}
             <span className="d-none d-md-inline">
