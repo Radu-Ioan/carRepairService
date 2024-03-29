@@ -1,7 +1,11 @@
 package com.carrepairservice.app.service.impl;
 
+import com.carrepairservice.app.domain.CarRepairAppointment;
 import com.carrepairservice.app.domain.CarService;
+import com.carrepairservice.app.domain.CarServiceEmployee;
 import com.carrepairservice.app.repository.CarServiceRepository;
+import com.carrepairservice.app.service.CarRepairAppointmentService;
+import com.carrepairservice.app.service.CarServiceEmployeeService;
 import com.carrepairservice.app.service.CarServiceService;
 import com.carrepairservice.app.service.dto.CarServiceDTO;
 import com.carrepairservice.app.service.mapper.CarServiceMapper;
@@ -26,9 +30,20 @@ public class CarServiceServiceImpl implements CarServiceService {
 
     private final CarServiceMapper carServiceMapper;
 
-    public CarServiceServiceImpl(CarServiceRepository carServiceRepository, CarServiceMapper carServiceMapper) {
+    private final CarRepairAppointmentService carRepairAppointmentService;
+
+    private final CarServiceEmployeeService carServiceEmployeeService;
+
+    public CarServiceServiceImpl(
+        CarServiceRepository carServiceRepository,
+        CarServiceMapper carServiceMapper,
+        CarRepairAppointmentService carRepairAppointmentService,
+        CarServiceEmployeeService carServiceEmployeeService
+    ) {
         this.carServiceRepository = carServiceRepository;
         this.carServiceMapper = carServiceMapper;
+        this.carRepairAppointmentService = carRepairAppointmentService;
+        this.carServiceEmployeeService = carServiceEmployeeService;
     }
 
     @Override
@@ -79,6 +94,26 @@ public class CarServiceServiceImpl implements CarServiceService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete CarService : {}", id);
+
+        var serviceOptional = carServiceRepository.findById(id);
+
+        if (serviceOptional.isPresent()) {
+            var service = serviceOptional.get();
+
+            var appointmentsListCopy = service.getRepairAppointments().toArray();
+
+            for (var app : appointmentsListCopy) {
+                var appointment = (CarRepairAppointment) app;
+                carRepairAppointmentService.delete(appointment.getId());
+            }
+
+            var employeeListCopy = service.getEmployees().toArray();
+
+            for (var e : employeeListCopy) {
+                var employee = (CarServiceEmployee) e;
+                carServiceEmployeeService.delete(employee.getId());
+            }
+        }
         carServiceRepository.deleteById(id);
     }
 }

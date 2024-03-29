@@ -62,6 +62,7 @@ public class CarServiceEmployeeServiceImpl implements CarServiceEmployeeService 
             // delete old
             if (!appointments.contains(a)) {
                 a.getResponsibleEmployees().remove(carServiceEmployee);
+                carRepairAppointmentRepository.save(a);
             }
         }
 
@@ -100,6 +101,7 @@ public class CarServiceEmployeeServiceImpl implements CarServiceEmployeeService 
             // delete old
             if (!appointments.contains(a)) {
                 a.getResponsibleEmployees().remove(carServiceEmployee);
+                carRepairAppointmentRepository.save(a);
             }
         }
 
@@ -158,6 +160,21 @@ public class CarServiceEmployeeServiceImpl implements CarServiceEmployeeService 
     @Override
     public void delete(Long id) {
         log.debug("Request to delete CarServiceEmployee : {}", id);
+
+        var employeeOptional = carServiceEmployeeRepository.findById(id);
+
+        if (employeeOptional.isPresent()) {
+            var employee = employeeOptional.get();
+
+            var carService = employee.getCarService();
+            carService.removeEmployees(employee);
+            carServiceRepository.save(carService);
+
+            for (var a : employee.getRepairAppointments()) {
+                a.removeResponsibleEmployees(employee);
+                carRepairAppointmentRepository.save(a);
+            }
+        }
         carServiceEmployeeRepository.deleteById(id);
     }
 }
